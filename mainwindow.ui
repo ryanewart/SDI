@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1178</width>
+    <height>644</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTreeWidget" name="treeWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>430</y>
+      <width>589</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </column>
+    <item>
+     <property name="text">
+      <string>Image Finder</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QListView" name="ClassFinder">
+    <property name="geometry">
+     <rect>
+      <x>595</x>
+      <y>430</y>
+      <width>589</width>
+      <height>171</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>1050</x>
+      <y>14</y>
+      <width>120</width>
+      <height>411</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>100</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Triangle</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>100</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Square</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>180</y>
+       <width>100</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string notr="true">Trapesium</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>12</width>
+       <height>12</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>260</y>
+       <width>100</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Polygon</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_5">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>340</y>
+       <width>100</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Clear</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="labelMainPic">
+    <property name="geometry">
+     <rect>
+      <x>18</x>
+      <y>14</y>
+      <width>1020</width>
+      <height>391</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../testAnnotation.jpg</pixmap>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1178</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionFile">
+   <property name="text">
+    <string>File</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>Save As...</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
