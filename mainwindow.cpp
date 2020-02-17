@@ -25,12 +25,22 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     if (drawShape == true){
         std::cout<<"Test"<<std::endl;
         drawShape = false;
+        QPoint coords = pos();
+        std::cout<<"x:"<<(coords.x())<<std::endl;
+        std::cout<<"y:"<<(coords.y())<<std::endl;
     }
 }
+
 
 void MainWindow::on_pushButton_2_clicked()
 {
     drawShape = true;
-    std::cout<<"Button Test"<<std::endl;
+    std::cout<<"Square Test"<<std::endl;
 
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    drawShape = true;
+    std::cout<<"Button Test"<<std::endl;
 }
