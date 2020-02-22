@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QPixmap pix("/Users/jamiehaywood/testAnnotation.jpg");
+    QPixmap pix("");
     int w = ui->labelMainPic->width();
     int h = ui->labelMainPic->height();
     ui->labelMainPic->setPixmap(pix.scaled(w,h, Qt::KeepAspectRatio));
