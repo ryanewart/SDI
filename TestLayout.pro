@@ -19,12 +19,16 @@ SOURCES += \
     annotation.cpp \
     itemclass.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    polygonclass.cpp \
+    shapeclass.cpp
 
 HEADERS += \
     annotation.h \
     itemclass.h \
-    mainwindow.h
+    mainwindow.h \
+    polygonclass.h \
+    shapeclass.h
 
 FORMS += \
     mainwindow.ui
