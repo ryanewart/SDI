@@ -2,20 +2,31 @@
 #define ANNOTATION_H
 #include <string>
 #include <QColor>
+#include "shapeclass.h"
+#include <fstream>
+
 using namespace std;
 
 class Annotation
 {
 public:
-    Annotation();
+    Annotation(vector<Shape>, int, string);
+    Annotation(vector<Shape>,int, string, string, QColor); //Change class diagram to list of shapes per annotation
+    string getCaption();
+    void setCaption(string);
+    QColor getColour();
+    void setColour(QColor);
+    void saveAnnotation();
+    void LoadAnnotation(); //Unsure on return type
+    Annotation copyShape();
 
 private:
     string caption;
-    //Shape of type shape
+    vector<Shape> annShapes;
     QColor annColour;
     int noOfAnnotations;
     string fileName;
-
+    bool fileExists(string);
 };
 
 #endif // ANNOTATION_H

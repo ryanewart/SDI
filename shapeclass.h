@@ -10,17 +10,19 @@ struct cord{
 
 enum shapeType {square, triangle, trapezium, polygon};
 
-class shapeClass
+class Shape
 {
 public:
-    shapeClass();
+    Shape();
     void DrawShape(); //Should probably pass the view object
     void removeShape(); //Should probably pass the view object
     void alterShape();
+    shapeType getShapeType();
+    double getCord(char, int);
 
 private:
     vector<cord> coordinates;
-    shapeType shape;
+    shapeType shape; //Should probably rename
 };
 
 

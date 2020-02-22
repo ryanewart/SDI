@@ -15,7 +15,6 @@ public:
     void RemoveClass();
     void SaveClass();
 
-
 private:
     string className;
     string classType;
