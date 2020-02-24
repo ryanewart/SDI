@@ -19,6 +19,7 @@ public:
     void saveAnnotation();
     void LoadAnnotation(); //Unsure on return type
     Annotation copyShape();
+    string getImgPath();
 
 private:
     string caption;
@@ -26,6 +27,7 @@ private:
     QColor annColour;
     int noOfAnnotations;
     string fileName;
+    string imgPath;
     bool fileExists(string);
 };
 

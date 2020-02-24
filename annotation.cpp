@@ -24,12 +24,18 @@ void Annotation::saveAnnotation(){
     }
 
     ofstream outputFile;
-    outputFile.open(fileName, ios::app);
+    outputFile.open(fileName, ios::app); //Number of annotated images (always 1), img path, number of shapes per image, for each shape: shape type, cords of each vertex
     if (outputFile.is_open()){
+        outputFile << "1" << "\n";
+        outputFile << imgPath << "\n";
         outputFile << noOfAnnotations << "\n";
         //For each image with this annotation
-        for (int i=0; i < annShapes.size(); i++){
-            outputFile << annShapes[i].
+        for (int i=0; i < noOfAnnotations; i++){
+            outputFile << annShapes[i].getShapeType() << "\n";
+            for (int j=0; j<annShapes[i].getNoVertecies(); j++){
+                outputFile << "x:" << annShapes[i].getCord('x', j) << "y:" << annShapes[i].getCord('y', j) << "\n";
+
+            }
         }
 
     }
@@ -37,7 +43,7 @@ void Annotation::saveAnnotation(){
 }
 
 void Annotation::LoadAnnotation(){
-
+    //Load annotation from file .annotation extension
 }
 
 Annotation Annotation::copyShape(){
@@ -48,3 +54,5 @@ bool Annotation::fileExists(string _fileName){
     ifstream existingFile(_fileName);
     return existingFile.good();
 }
+
+string Annotation::getImgPath() { return imgPath; }
