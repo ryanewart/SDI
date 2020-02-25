@@ -128,25 +128,6 @@
      </property>
     </widget>
    </widget>
-   <widget class="QLabel" name="labelMainPic">
-    <property name="geometry">
-     <rect>
-      <x>18</x>
-      <y>14</y>
-      <width>1020</width>
-      <height>391</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>../testAnnotation.jpg</pixmap>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

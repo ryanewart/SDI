@@ -65,7 +65,7 @@ void Annotation::LoadAnnotation(){
     int noImages;
     int noShapes;
     map<int, int> vertexMapping;
-    vertexMapping[1] = 4; vertexMapping[2] = 3; vertexMapping [3] = 4; vertexMapping[4] = 0
+    vertexMapping[1] = 4; vertexMapping[2] = 3; vertexMapping [3] = 4; vertexMapping[4] = 0;
     ifstream inputFile;
     inputFile.open(fileName, ios::in);
     if (inputFile.is_open()){
