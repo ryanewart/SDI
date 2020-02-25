@@ -9,16 +9,17 @@ class ItemClass
 {
 
 public:
-    ItemClass();
+    ItemClass(string);
     void SelectClass();
     void AddClass();
     void RemoveClass();
     void SaveClass();
+    void AddAnnotation(Annotation);
 
 private:
     string className;
     string classType;
-    Annotation label;
+    vector<Annotation> labels;
 };
 
 #endif // ITEMCLASS_H

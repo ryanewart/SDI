@@ -4,8 +4,8 @@
 using namespace std;
 
 struct cord{
-    double x;
-    double y;
+    int x;
+    int y;
 };
 
 enum shapeType {square = 1, triangle, trapezium, polygon};
@@ -17,6 +17,7 @@ public:
     void DrawShape(); //Should probably pass the view object
     void removeShape(); //Should probably pass the view object
     void alterShape();
+    void addCord(int, int);
     shapeType getShapeType();
     double getCord(char, int);
     int getNoVertecies();

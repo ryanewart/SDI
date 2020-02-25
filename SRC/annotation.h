@@ -10,6 +10,7 @@ using namespace std;
 class Annotation
 {
 public:
+    Annotation(string);
     Annotation(vector<Shape>, int, string);
     Annotation(vector<Shape>,int, string, string, QColor); //Change class diagram to list of shapes per annotation
     string getCaption();
