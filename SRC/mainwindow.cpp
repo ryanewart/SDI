@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QPixmap>
 #include <iostream>
+#include <list>
+#include <QMessageBox>
 
 int clicks = 0;
 int x1;
@@ -9,6 +11,7 @@ int y1;
 int Awidth;
 int Aheight;
 int type;
+
 std::vector<int> allCoords;
 std::vector<coords> PolyPoints;
 
@@ -30,6 +33,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
+    QMessageBox PolyBox;
     int count = 0;
     QPainter painter(this);
     painter.setBrush(Qt::DiagCrossPattern);
@@ -50,18 +54,29 @@ void MainWindow::paintEvent(QPaintEvent *event)
             allCoords.push_back(Aheight);
             clicks = 0;
         }
-        if (allCoords.empty() == false) {
-            for (int i = 0; i<allCoords.size(); i = i+4)
-            painter.drawRect(QRect(allCoords[i],allCoords[i+1],-allCoords[i+2],-allCoords[i+3]));
-        }
-
     }
+    if (allCoords.empty() == false) {
+        for (int i = 0; i<allCoords.size(); i = i+4)
+        painter.drawRect(QRect(allCoords[i],allCoords[i+1],-allCoords[i+2],-allCoords[i+3]));
+    }
+
     if (type == 3) {
-        if (PolyPoints.size() > 1) {
-            for (int j = 1; j < (PolyPoints.size()); j++) {
-                painter.drawLine(PolyPoints[j-1].x, PolyPoints[j-1].y, PolyPoints[j].x, PolyPoints[j].y);
-            }
+        int xDiff = PolyPoints[PolyPoints.size()-1].x -PolyPoints[0].x;
+        int yDiff = PolyPoints[PolyPoints.size()-1].y -PolyPoints[0].y;
+        if ((xDiff < 5 && xDiff >-5) && (yDiff < 5 && yDiff >-5)) {
+            type = 0;
         }
+    }
+    if (PolyPoints.size() > 1) {
+        for (int j = 1; j < (PolyPoints.size()); j++) {
+            painter.drawLine(PolyPoints[j-1].x, PolyPoints[j-1].y, PolyPoints[j].x, PolyPoints[j].y);
+        }
+    }
+    if (PolyPoints.size() == 9) {
+        PolyBox.setText("This shape can only have a maximum of 8 points");
+        PolyBox.exec();
+        PolyPoints.clear();
+        type = 0;
     }
 }
 
@@ -75,6 +90,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     //std::cout<<"y:"<<(coords.y())<<std::endl;
     Awidth = Awidth = x1 - (coords.x()-130);
     Aheight = y1 - (coords.y()-120);
+    if (type ==3) {
+    PolyPoints[PolyPoints.size()-1] = {coords.x()-130,coords.y()-120};
+    }
     repaint();
     }
 }
@@ -130,6 +148,7 @@ void MainWindow::on_pushButton_5_clicked()
 {
     type = 0;
     allCoords.clear();
+    PolyPoints.clear();
     repaint();
 }
 
