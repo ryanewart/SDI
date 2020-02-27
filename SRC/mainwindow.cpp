@@ -61,7 +61,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
         }
     }
     if(allPolys.size() > 0) {
-        for (int count = 1; count<allPolys.size();count++) {
+        for (int count = 0; count<allPolys.size();count++) {
             for (int j = 1; j < allPolys[count].size(); j++) {
                 painter.drawLine(allPolys[count][j-1].x, allPolys[count][j-1].y, allPolys[count][j].x, allPolys[count][j].y);
             }
@@ -96,8 +96,6 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     QPoint coords = QCursor::pos();
     mapFromGlobal(QCursor::pos());
     if (clicks != 0) {
-    //std::cout<<"x:"<<(coords.x())<<std::endl;
-    //std::cout<<"y:"<<(coords.y())<<std::endl;
     Awidth = Awidth = x1 - (coords.x()-130);
     Aheight = y1 - (coords.y()-120);
     if (type ==3 && clicks > 1) {
@@ -155,11 +153,12 @@ void MainWindow::on_pushButton_clicked()
     std::cout<<"Triangle Test"<<std::endl;
 }
 
-void MainWindow::on_pushButton_5_clicked()
+void MainWindow::on_pushButton_5_clicked() //clear Button
 {
     type = 0;
     allCoords.clear();
     PolyPoints.clear();
+    allPolys.clear();
     repaint();
 }
 
