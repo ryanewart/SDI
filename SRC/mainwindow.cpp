@@ -170,7 +170,8 @@ void MainWindow::on_pushButton_4_clicked() //polygon Button
     type = 3;
 }
 
-void MainWindow::on_pushButton_6_clicked() // open image
+
+void MainWindow::on_actionOpen_triggered()
 {
     QString filename = QFileDialog::getOpenFileName(
                 this,
@@ -181,5 +182,9 @@ void MainWindow::on_pushButton_6_clicked() // open image
         QString msg = "You chose the file:\n";
         QMessageBox::information(this, tr("File name"), msg.append(filename));
     }
-    //QMessageBox::information(this, tr("File name"), filename);
+
+    QPixmap pix(filename);
+    int w = ui->labelMainPic->width();
+    int h = ui->labelMainPic->height();
+    ui->labelMainPic->setPixmap(pix.scaled(w,h, Qt::KeepAspectRatio));
 }
