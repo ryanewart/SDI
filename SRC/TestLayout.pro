@@ -22,7 +22,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     polygonclass.cpp \
-    shapeclass.cpp
+    shapeclass.cpp \
+    project-tests.cpp
 
 HEADERS += \
     LinkedList.h \

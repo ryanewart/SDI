@@ -68,17 +68,21 @@ void MainWindow::paintEvent(QPaintEvent *event)
         }
 
     }
+
+
     if (type == 3) {
-        int xDiff = PolyPoints[PolyPoints.size()-1].x -PolyPoints[0].x;
-        int yDiff = PolyPoints[PolyPoints.size()-1].y -PolyPoints[0].y;
-        if (((xDiff < 5 && xDiff >-5) && (yDiff < 5 && yDiff >-5)) &&(PolyPoints.size()>1)) {
-            PolyPoints[PolyPoints.size()-1] = PolyPoints[0];
-            type = 0;
-            allPolys.push_back(PolyPoints);
-            PolyPoints.clear();
+        if (PolyPoints.size() > 2) {
+            int xDiff = PolyPoints[PolyPoints.size()-1].x -PolyPoints[0].x;
+            int yDiff = PolyPoints[PolyPoints.size()-1].y -PolyPoints[0].y;
+            if (((xDiff < 5 && xDiff >-5) && (yDiff < 5 && yDiff >-5)) && (PolyPoints.size()>2)) {
+                PolyPoints[PolyPoints.size()-1] = PolyPoints[0];
+                type = 0;
+                allPolys.push_back(PolyPoints);
+                PolyPoints.clear();
         }
     }
-    if (PolyPoints.size() > 1) {
+    }
+    if (PolyPoints.size() > 0) {
         for (int j = 1; j < (PolyPoints.size()); j++) {
             painter.drawLine(PolyPoints[j-1].x, PolyPoints[j-1].y, PolyPoints[j].x, PolyPoints[j].y);
         }
@@ -90,16 +94,17 @@ void MainWindow::paintEvent(QPaintEvent *event)
         type = 0;
     }
 
+
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     QPoint coords = QCursor::pos();
     mapFromGlobal(QCursor::pos());
     if (clicks != 0) {
-    Awidth = Awidth = x1 - (coords.x()-130);
-    Aheight = y1 - (coords.y()-120);
+    Awidth = Awidth = x1 - (coords.x());
+    Aheight = y1 - (coords.y());
     if (type ==3 && clicks > 1) {
-    PolyPoints[PolyPoints.size()-1] = {coords.x()-130,coords.y()-120};
+        PolyPoints[PolyPoints.size()-1] = {coords.x()-130,coords.y()-120};
     }
     repaint();
     }
@@ -128,11 +133,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     //Polygon
     if  (type == 3) {
         clicks = clicks+1;
-        if (PolyPoints.size() == 0) {
-
-        }
         PolyPoints.push_back({coords.x()-130,coords.y()-120});
-
         }
 
     repaint();
@@ -162,7 +163,7 @@ void MainWindow::on_pushButton_5_clicked() //clear Button
     repaint();
 }
 
-void MainWindow::on_pushButton_4_clicked() //polygone Button
+void MainWindow::on_pushButton_4_clicked() //polygon Button
 {
     clicks = 1;     //temporary, change to method in class
     type = 3;
