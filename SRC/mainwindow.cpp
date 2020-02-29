@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 #include <QMessageBox>
+#include <QFileDialog>
 
 int clicks = 0;
 int x1;
@@ -167,4 +168,18 @@ void MainWindow::on_pushButton_4_clicked() //polygon Button
 {
     clicks = 1;     //temporary, change to method in class
     type = 3;
+}
+
+void MainWindow::on_pushButton_6_clicked() // open image
+{
+    QString filename = QFileDialog::getOpenFileName(
+                this,
+                tr("Open file"),
+                "/",
+                "Images (*.png *.jpg *.jpeg)");
+    if (!filename.isEmpty()){
+        QString msg = "You chose the file:\n";
+        QMessageBox::information(this, tr("File name"), msg.append(filename));
+    }
+    //QMessageBox::information(this, tr("File name"), filename);
 }
