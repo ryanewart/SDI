@@ -3,5 +3,5 @@
 #include <QApplication>
 #include "LinkedList.h"
 
-MainWindow* ptr;
+MainWindow * ptr;
 #endif // MAIN_H
