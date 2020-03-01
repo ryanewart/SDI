@@ -102,8 +102,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     QPoint coords = QCursor::pos();
     mapFromGlobal(QCursor::pos());
     if (clicks != 0) {
-    Awidth = Awidth = x1 - (coords.x());
-    Aheight = y1 - (coords.y());
+    Awidth = Awidth = x1 - (coords.x()-130);
+    Aheight = y1 - (coords.y()-120);
     if (type ==3 && clicks > 1) {
         PolyPoints[PolyPoints.size()-1] = {coords.x()-130,coords.y()-120};
     }
@@ -173,6 +173,7 @@ void MainWindow::on_pushButton_4_clicked() //polygon Button
 
 void MainWindow::on_actionOpen_triggered()
 {
+    try {
     QString filename = QFileDialog::getOpenFileName(
                 this,
                 tr("Open file"),
@@ -186,5 +187,8 @@ void MainWindow::on_actionOpen_triggered()
     QPixmap pix(filename);
     int w = ui->labelMainPic->width();
     int h = ui->labelMainPic->height();
-    ui->labelMainPic->setPixmap(pix.scaled(w,h, Qt::KeepAspectRatio));
+    ui->labelMainPic->setPixmap(pix.scaled(w,h, Qt::KeepAspectRatio));}
+    catch(const std::runtime_error& e) {
+
+    }
 }
