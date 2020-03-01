@@ -8,9 +8,11 @@
 #include<vector>
 #include "LinkedList.h"
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
 
 
 
@@ -44,3 +46,4 @@ private:
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
+

@@ -29,6 +29,7 @@ HEADERS += \
     LinkedList.h \
     annotation.h \
     itemclass.h \
+    main.h \
     mainwindow.h \
     polygonclass.h \
     shapeclass.h

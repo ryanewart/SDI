@@ -1,6 +1,9 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
+#include "mainwindow.h"
+
+
 
 struct coords {
     int x,y;
@@ -28,5 +31,6 @@ public:
     int size();
 
 };
+
 
 #endif // LINKEDLIST_H
