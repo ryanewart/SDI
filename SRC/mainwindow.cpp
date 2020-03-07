@@ -5,17 +5,13 @@
 #include <list>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QPolygon>
 
-int clicks = 0;
-int x1;
-int y1;
-int Awidth;
-int Aheight;
-int type;
 
-std::vector<int> allCoords;
-std::vector<coords> PolyPoints;
-std::vector<std::vector<coords>> allPolys;
+coords triangle[3];
+coords trap[4];
+
+std:: vector<QPolygon> Triangles;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -70,6 +66,28 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
     }
 
+    if (Triangles.size() > 0){
+        for (int i = 0; i< Triangles.size(); i++) {
+            painter.drawPolygon(Triangles[i]);
+        }
+    }
+
+    if (type == 2 && clicks == 2) {
+        //trap[2] ={(trap[0].x + (trap[0].x / 5)),trap[1].y};
+        //trap[3] ={(trap[1].x + (trap[1].x / 5)),trap[0].y};
+        QPolygon polyLines;
+        polyLines << QPoint(triangle[0].x,triangle[0].y);
+        polyLines << QPoint(triangle[1].x,triangle[1].y);
+        polyLines << QPoint(triangle[2].x,triangle[2].y);
+        painter.drawPolygon(polyLines);
+        Triangles.push_back(polyLines);
+        polyLines.clear();
+        if (clicks == 3) {
+        }
+
+
+
+    }
 
     if (type == 3) {
         if (PolyPoints.size() > 2) {
@@ -83,6 +101,20 @@ void MainWindow::paintEvent(QPaintEvent *event)
         }
     }
     }
+
+    if (type == 4) {
+        if (clicks = 2) {
+            trap[2] = {(trap[0].x+(trap[0].x/5)),trap[1].y};
+            trap[3] = {(trap[1].x+(trap[1].x/5)),trap[0].y};
+            QPolygon polyLines;
+            polyLines << QPoint(trap[0].x,trap[0].y);
+            polyLines << QPoint(trap[2].x,trap[2].y);
+            polyLines << QPoint(trap[1].x,trap[1].y);
+            polyLines << QPoint(trap[3].x,trap[3].y);
+            painter.drawPolygon(polyLines);
+        }
+    }
+
     if (PolyPoints.size() > 0) {
         for (int j = 1; j < (PolyPoints.size()); j++) {
             painter.drawLine(PolyPoints[j-1].x, PolyPoints[j-1].y, PolyPoints[j].x, PolyPoints[j].y);
@@ -107,6 +139,13 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     if (type ==3 && clicks > 1) {
         PolyPoints[PolyPoints.size()-1] = {coords.x()-130,coords.y()-120};
     }
+    if (type == 2) {
+        triangle[1] = {coords.x()-130,coords.y()-120};
+    }
+    if (type == 4 && clicks >1){
+
+    }
+
     repaint();
     }
 }
@@ -131,12 +170,52 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
         }
     }
 
+    //triangle
+    if (type == 2) {
+        mapFromGlobal(QCursor::pos());
+        x1 = coords.x()-130;
+        y1 = coords.y()-120;
+
+
+        if (clicks == 2) {
+            x1 = coords.x()-130;
+            y1 = coords.y()-120;
+            triangle[1] = {x1,y1};
+            triangle[2] = {(triangle[0].x),(triangle[1].y)};
+            clicks = 3;
+
+        }
+        if (clicks ==1) {
+            clicks = 2;
+            triangle[0] = {x1,y1};
+        }
+
+    }
+
     //Polygon
     if  (type == 3) {
         clicks = clicks+1;
         PolyPoints.push_back({coords.x()-130,coords.y()-120});
         }
 
+    //trap
+    if (type == 4) {
+        if (clicks == 2) {
+            mapFromGlobal(QCursor::pos());
+            x1 = coords.x()-130;
+            y1 = coords.y()-120;
+            trap[1] = {x1,y1};
+
+
+        }
+        if ( clicks == 1) {
+            mapFromGlobal(QCursor::pos());
+            x1 = coords.x()-130;
+            y1 = coords.y()-120;
+            clicks = clicks+1;
+            trap[0] = {x1,y1};
+        }
+    }
     repaint();
 }
 
@@ -148,11 +227,11 @@ void MainWindow::on_pushButton_2_clicked() //square button
 
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButton_clicked() //triangle button
 {
-    clicks = 2;
+    type = 2;
+    clicks = 1;
 
-    std::cout<<"Triangle Test"<<std::endl;
 }
 
 void MainWindow::on_pushButton_5_clicked() //clear Button
@@ -170,15 +249,23 @@ void MainWindow::on_pushButton_4_clicked() //polygon Button
     type = 3;
 }
 
+void MainWindow::on_pushButton_3_clicked() //trap
+{
+    clicks = 1;
+    type = 4;
+}
+
 
 void MainWindow::on_actionOpen_triggered()
 {
     try {
+
     QString filename = QFileDialog::getOpenFileName(
                 this,
                 tr("Open file"),
                 "/",
                 "Images (*.png *.jpg *.jpeg)");
+
     if (!filename.isEmpty()){
         QString msg = "You chose the file:\n";
         QMessageBox::information(this, tr("File name"), msg.append(filename));
@@ -192,3 +279,4 @@ void MainWindow::on_actionOpen_triggered()
 
     }
 }
+

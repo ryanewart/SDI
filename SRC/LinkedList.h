@@ -3,8 +3,6 @@
 
 #include "mainwindow.h"
 
-
-
 struct coords {
     int x,y;
 };

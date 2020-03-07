@@ -6,6 +6,7 @@
 #include <iostream>
 #include<QPainter>
 #include<vector>
+#include<list>
 #include "LinkedList.h"
 
 
@@ -24,6 +25,29 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    struct coords {
+        int x,y;
+    };
+
+    std::vector<coords> PolyPoints;
+
+    std::vector<std::vector<coords>> allPolys;
+
+    std::vector<int> allCoords;
+
+
+    int clicks = 0;
+
+    int x1;
+
+    int y1;
+
+    int Awidth;
+
+    int Aheight;
+
+    int type;
+
 private slots:
 
     void mouseMoveEvent(QMouseEvent *event)Q_DECL_OVERRIDE;
@@ -41,6 +65,8 @@ private slots:
     void on_pushButton_4_clicked();
 
     void on_actionOpen_triggered();
+
+    void on_pushButton_3_clicked();
 
 private:
     Ui::MainWindow *ui;
