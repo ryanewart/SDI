@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     LinkedList.cpp \
+    Tests.cpp \
     annotation.cpp \
     itemclass.cpp \
     main.cpp \
@@ -35,6 +36,14 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui
+
+macx{
+INCLUDEPATH += "/usr/local/Cellar/boost/1.72.0/include"
+LIBS += -L"/usr/local/Cellar/boost/1.72.0/lib"
+}
+
+LIBS += -lboost_unit_test_framework
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

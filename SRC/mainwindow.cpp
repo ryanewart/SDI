@@ -31,6 +31,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
+    QImage tmp(ui->labelMainPic->pixmap()->toImage());
     QMessageBox PolyBox;
     int count = 0;
     QPainter painter(this);
@@ -65,28 +66,32 @@ void MainWindow::paintEvent(QPaintEvent *event)
         }
 
     }
-
-    if (Triangles.size() > 0){
+    if (Triangles.empty() == false) {
         for (int i = 0; i< Triangles.size(); i++) {
-            painter.drawPolygon(Triangles[i]);
-        }
+                painter.drawPolygon(Triangles[i]);
+            }
     }
 
-    if (type == 2 && clicks == 2) {
-        //trap[2] ={(trap[0].x + (trap[0].x / 5)),trap[1].y};
-        //trap[3] ={(trap[1].x + (trap[1].x / 5)),trap[0].y};
+    if (type == 2) {
         QPolygon polyLines;
-        polyLines << QPoint(triangle[0].x,triangle[0].y);
-        polyLines << QPoint(triangle[1].x,triangle[1].y);
-        polyLines << QPoint(triangle[2].x,triangle[2].y);
-        painter.drawPolygon(polyLines);
-        Triangles.push_back(polyLines);
-        polyLines.clear();
-        if (clicks == 3) {
+        if (clicks == 4) {
+            polyLines << QPoint(triangle[0].x,triangle[0].y);
+            polyLines << QPoint(triangle[1].x,triangle[1].y);
+            polyLines << QPoint(triangle[2].x,triangle[2].y);
+            painter.drawPolygon(polyLines);
+            Triangles.push_back(polyLines);
+            clicks = 5;
+            type = 0;
+            polyLines.clear();
         }
+        if (clicks == 3) {//Triangle
+            polyLines << QPoint(triangle[0].x,triangle[0].y);
+            polyLines << QPoint(triangle[1].x,triangle[1].y);
+            polyLines << QPoint(triangle[2].x,triangle[2].y);
+            painter.drawPolygon(polyLines);
 
 
-
+        }
     }
 
     if (type == 3) {
@@ -102,7 +107,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     }
     }
 
-    if (type == 4) {
+    if (type == 4) { //trapezium
         if (clicks = 2) {
             trap[2] = {(trap[0].x+(trap[0].x/5)),trap[1].y};
             trap[3] = {(trap[1].x+(trap[1].x/5)),trap[0].y};
@@ -127,7 +132,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
         type = 0;
     }
 
-
+    ui->labelMainPic->setPixmap(QPixmap::fromImage(tmp));
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {
@@ -139,8 +144,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     if (type ==3 && clicks > 1) {
         PolyPoints[PolyPoints.size()-1] = {coords.x()-130,coords.y()-120};
     }
-    if (type == 2) {
+    if ((type == 2) && (clicks > 1)) {
         triangle[1] = {coords.x()-130,coords.y()-120};
+        triangle[2] = {(triangle[0].x),(triangle[1].y)};
     }
     if (type == 4 && clicks >1){
 
@@ -176,18 +182,19 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
         x1 = coords.x()-130;
         y1 = coords.y()-120;
 
+        if(clicks == 3) {
+            clicks = 4;
+        }
 
         if (clicks == 2) {
-            x1 = coords.x()-130;
-            y1 = coords.y()-120;
             triangle[1] = {x1,y1};
             triangle[2] = {(triangle[0].x),(triangle[1].y)};
             clicks = 3;
 
         }
         if (clicks ==1) {
-            clicks = 2;
             triangle[0] = {x1,y1};
+            clicks = 2;
         }
 
     }
@@ -274,7 +281,8 @@ void MainWindow::on_actionOpen_triggered()
     QPixmap pix(filename);
     int w = ui->labelMainPic->width();
     int h = ui->labelMainPic->height();
-    ui->labelMainPic->setPixmap(pix.scaled(w,h, Qt::KeepAspectRatio));}
+
+    ui->labelMainPic->setPixmap(pix.scaled(w,h, Qt::IgnoreAspectRatio));}
     catch(const std::runtime_error& e) {
 
     }
