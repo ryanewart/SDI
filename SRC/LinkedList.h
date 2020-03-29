@@ -18,6 +18,7 @@ private:
     node * head;
     node * tail;
 public:
+    coords popTail();
     List(coords input);
     node CreateNode(coords input, node * prev);
     void addNode(coords input);

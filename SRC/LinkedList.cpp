@@ -18,22 +18,26 @@ node List::CreateNode(coords input, node * prev) {
     testnode.next = NULL;
     return testnode;
 }
-/*
+
 bool List:: searchList(coords input) {
     node* firstNode = new node;
     firstNode = head;
     node Test = *firstNode;
-    while((Test.previous != NULL) and (Test.value != input)) {
+
+    while(Test.previous != NULL) {
         firstNode = Test.previous;
         Test = *firstNode;
-        cout<<Test.value<<endl;
+        if ((Test.values.x != input.x) && (Test.values.y != input.y)) {
+            break;
+        }
     }
 
-    if (Test.value == input)
+    if ((Test.values.x != input.x) && (Test.values.y != input.y))
         return 1;
+
     else return 0;
 }
-*/
+
 
 /*
 void List:: displayList() {
@@ -77,6 +81,18 @@ coords List:: popHead() {
     NewHead = NodeHead->previous;
     NodeHead->previous = NULL;
     head = NewHead;
+    return value;
+}
+
+coords List:: popTail() {
+    node* nodeTail = new node;
+    node* newTail = new node;
+    nodeTail = tail;
+    node Test = *nodeTail;
+    coords value = Test.values;
+    newTail = nodeTail->next;
+    nodeTail->next = NULL;
+    head = newTail;
     return value;
 }
 

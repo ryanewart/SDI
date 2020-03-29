@@ -17,14 +17,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     LinkedList.cpp \
-    Tests.cpp \
     annotation.cpp \
     itemclass.cpp \
     main.cpp \
     mainwindow.cpp \
     polygonclass.cpp \
     shapeclass.cpp \
-    project-tests.cpp
+    Tests/project-tests.cpp \
 
 HEADERS += \
     LinkedList.h \
