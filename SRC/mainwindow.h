@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPixmap>
+#include <QFileSystemModel>
 #include <iostream>
 #include<QPainter>
 #include<vector>
@@ -68,8 +69,11 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void on_treeView_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
+    QFileSystemModel *dirModel;
 };
 #endif // MAINWINDOW_H
 

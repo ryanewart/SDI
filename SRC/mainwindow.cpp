@@ -18,10 +18,14 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QPixmap pix("");
-    int w = ui->labelMainPic->width();
-    int h = ui->labelMainPic->height();
-    ui->labelMainPic->setPixmap(pix.scaled(w,h, Qt::KeepAspectRatio));
+
+    dirModel = new QFileSystemModel(this);
+    dirModel->setRootPath(QDir::homePath());
+    ui->treeView->setModel(dirModel);
+    ui->treeView->setSortingEnabled(true);
+    ui->treeView->setAnimated(true);
+    ui->treeView->setColumnWidth(0, ui->treeView->width()/2);
+
 }
 
 MainWindow::~MainWindow()
@@ -31,7 +35,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-    QImage tmp(ui->labelMainPic->pixmap()->toImage());
+    //QPixmap myPix ("/Users/jamiehaywood/testAnnotation.jpg");
     QMessageBox PolyBox;
     int count = 0;
     QPainter painter(this);
@@ -132,7 +136,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
         type = 0;
     }
 
-    ui->labelMainPic->setPixmap(QPixmap::fromImage(tmp));
+     //ui->labelMainPic->setPixmap(myPix);
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {
@@ -282,9 +286,21 @@ void MainWindow::on_actionOpen_triggered()
     int w = ui->labelMainPic->width();
     int h = ui->labelMainPic->height();
 
-    ui->labelMainPic->setPixmap(pix.scaled(w,h, Qt::IgnoreAspectRatio));}
-    catch(const std::runtime_error& e) {
+    ui->labelMainPic->setPixmap(pix.scaled(w,h, Qt::IgnoreAspectRatio));
+    } catch(const std::runtime_error& e) {
 
     }
 }
 
+
+void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
+{
+    QString path = dirModel->fileInfo(index).absoluteFilePath();
+    try {
+        QPixmap image(path);
+        ui->labelMainPic->setPixmap(path);
+        ui->labelMainPic->setScaledContents(true);
+     } catch (...) {
+        ui->labelMainPic->setText("Invalid file format");
+     }
+}
