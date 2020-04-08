@@ -97,6 +97,8 @@ private slots:
 
     void setResize();
 
+    //QPolygon assignShape(coords Shape[]);
+
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *dirModel;

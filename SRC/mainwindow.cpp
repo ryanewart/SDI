@@ -50,6 +50,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+QPolygon assignShape(coords Shape[]) {
+    QPolygon polyLines;
+    polyLines << QPoint(Shape[0].x,Shape[0].y);
+    polyLines << QPoint(Shape[2].x,Shape[2].y);
+    polyLines << QPoint(Shape[1].x,Shape[1].y);
+    polyLines << QPoint(Shape[3].x,Shape[3].y);
+    return polyLines;
+}
+
 void MainWindow::paintEvent(QPaintEvent *event)
 {
     //QPixmap myPix ("/Users/jamiehaywood/testAnnotation.jpg");
@@ -72,10 +82,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     if (type == 1) { //rectangle
         QPolygon squareLines;
         if (clicks == 4) {
-            squareLines << QPoint(square[0].x,square[0].y);
-            squareLines << QPoint(square[2].x,square[2].y);
-            squareLines << QPoint(square[1].x,square[1].y);
-            squareLines << QPoint(square[3].x,square[3].y);
+            squareLines = assignShape(square);
             painter.drawPolygon(squareLines);
             Squares.push_back(squareLines);
             squareLines.clear();
@@ -84,10 +91,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
         }
         if (clicks == 3) {
             std::cout<<clicks<<std::endl;
-            squareLines << QPoint(square[0].x,square[0].y);
-            squareLines << QPoint(square[2].x,square[2].y);
-            squareLines << QPoint(square[1].x,square[1].y);
-            squareLines << QPoint(square[3].x,square[3].y);
+            squareLines = assignShape(square);
             painter.drawPolygon(squareLines);
         }
 
@@ -147,24 +151,18 @@ void MainWindow::paintEvent(QPaintEvent *event)
     }
 
     if (type == 4) { //trapezium
-         QPolygon polyLines;
+         QPolygon trapLines;
         if (clicks == 4) {
-            polyLines << QPoint(trap[0].x,trap[0].y);
-            polyLines << QPoint(trap[2].x,trap[2].y);
-            polyLines << QPoint(trap[1].x,trap[1].y);
-            polyLines << QPoint(trap[3].x,trap[3].y);
-            painter.drawPolygon(polyLines);
-            Trapeziums.push_back(polyLines);
-            polyLines.clear();
+            trapLines = assignShape(trap);
+            painter.drawPolygon(trapLines);
+            Trapeziums.push_back(trapLines);
+            trapLines.clear();
             clicks = 5;
             type = 0;
         }
         if (clicks == 3) {
-            polyLines << QPoint(trap[0].x,trap[0].y);
-            polyLines << QPoint(trap[2].x,trap[2].y);
-            polyLines << QPoint(trap[1].x,trap[1].y);
-            polyLines << QPoint(trap[3].x,trap[3].y);
-            painter.drawPolygon(polyLines);
+            trapLines = assignShape(trap);
+            painter.drawPolygon(trapLines);
         }
     }
 
@@ -183,27 +181,41 @@ void MainWindow::paintEvent(QPaintEvent *event)
      //ui->labelMainPic->setPixmap(myPix);
 }
 
+
+coords& addCoordData(coords Shape[], int Size,  int x, int y, int addition = 0) {
+    Shape[1] = {x,y};
+    int ones = 1, zeros = 0, temp;
+    for (int i = 2; i<Size;i++) {
+        Shape[i] = {Shape[zeros].x,Shape[ones].y};
+        temp = ones;
+        ones = zeros;
+        zeros = ones;
+    }
+    return *Shape;
+}
+
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     QPoint coords = QCursor::pos();
     mapFromGlobal(QCursor::pos());
-    if (clicks != 0) {
-        if ((type == 1) && (clicks > 1)) {
+    if (clicks >1) {
+        addCoordData(square,4,1,1);
+        if ((type == 1)) {
             square[1] = {coords.x()-130,coords.y()-120};
             square[2] = {square[0].x,square[1].y};
             square[3] = {square[1].x,square[0].y};
         }
 
-        if ((type == 2) && (clicks > 1)) {
+        if ((type == 2)) {
             triangle[1] = {coords.x()-130,coords.y()-120};
             triangle[2] = {(triangle[0].x),(triangle[1].y)};
         }
-        if ((type == 4) && (clicks > 1)){
+        if ((type == 4)){
             trap[1] = {coords.x()-130,coords.y()-120};
             trap[2] = {(trap[0].x+(trap[0].x/5)),trap[1].y};
             trap[3] = {(trap[1].x+(trap[1].x/5)),trap[0].y};
         }
 
-        if (type ==3 && clicks > 1) {
+        if (type ==3) {
             PolyPoints[PolyPoints.size()-1] = {coords.x()-130,coords.y()-120};
         }
     }
@@ -282,13 +294,16 @@ void MainWindow::checkShape(std::vector<QPolygon> Shape, int x, int y) {
             if (((Shape[i][j].x() < (x-130)+10) && (Shape[i][j].x() > (x-130)-10)) && ((Shape[i][j].y() < (y-120)+10) && (Shape[i][j].y() > (y-120)-10))) {
                 if (Shape[i].size() == 3) {
                     editShapes(i,j,"Triangle",x-130,y-120);
+                    break;
                 }
                 if (Shape[i].size() == 4 && (Shape[i][0].x() !=Shape[i][1].x())) {
                     editShapes(i,j,"Trap",x-130,y-120);
                     std::cout<<"trap"<<std::endl;
+                    break;
                 }
                 else{ editShapes(i,j,"Square",x-130,y-120);
                 std::cout<<"Square"<<std::endl;
+                break;
                                }
             }
         }
