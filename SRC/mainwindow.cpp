@@ -11,11 +11,13 @@
 
 QLabel *annotationLabel = NULL;
 coords triangle[3];
+coords square[4];
 coords trap[4];
+bool resizing = false;
 bool drawing;
 bool moving;
 std:: vector<coords> tempShape;
-
+std:: vector<QPolygon> Squares;
 std:: vector<QPolygon> Trapeziums;
 int editingI,editingJ;
 std::string editingType;
@@ -25,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-<<<<<<< HEAD
+
     QPixmap pix("");
     int w = ui->labelMainPic->width();
     int h = ui->labelMainPic->height();
@@ -33,7 +35,6 @@ MainWindow::MainWindow(QWidget *parent)
     annotationLabel = new QLabel(this);
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ShowContextMenu(const QPoint &)));
-=======
 
     dirModel = new QFileSystemModel(this);
     dirModel->setRootPath(QDir::homePath());
@@ -42,7 +43,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->treeView->setAnimated(true);
     ui->treeView->setColumnWidth(0, ui->treeView->width()/2);
 
->>>>>>> 85fb838bda6699be036e0a4d1ceefe53b340ce85
 }
 
 MainWindow::~MainWindow()
@@ -64,20 +64,34 @@ void MainWindow::paintEvent(QPaintEvent *event)
     pen.setWidth(5);
 
     painter.setPen(pen);
-    if (allCoords.empty() == false) {
-        for (int i = 0; i<allCoords.size(); i = i+4)
-        painter.drawRect(QRect(allCoords[i],allCoords[i+1],-allCoords[i+2],-allCoords[i+3]));
+    if (Squares.empty() == false) {
+        for (int i = 0; i<Squares.size(); i++)
+       painter.drawPolygon(Squares[i]);
     }
+
     if (type == 1) { //rectangle
-        painter.drawRect(QRect(x1,y1,-Awidth,-Aheight));
-        if (clicks == 3) {
-            painter.drawRect(QRect(x1,y1,-Awidth,-Aheight));
-            allCoords.push_back(x1);
-            allCoords.push_back(y1);
-            allCoords.push_back(Awidth);
-            allCoords.push_back(Aheight);
-            clicks = 0;
+        QPolygon squareLines;
+        if (clicks == 4) {
+            squareLines << QPoint(square[0].x,square[0].y);
+            squareLines << QPoint(square[2].x,square[2].y);
+            squareLines << QPoint(square[1].x,square[1].y);
+            squareLines << QPoint(square[3].x,square[3].y);
+            painter.drawPolygon(squareLines);
+            Squares.push_back(squareLines);
+            squareLines.clear();
+            clicks = 5;
+            type = 0;
         }
+        if (clicks == 3) {
+            std::cout<<clicks<<std::endl;
+            squareLines << QPoint(square[0].x,square[0].y);
+            squareLines << QPoint(square[2].x,square[2].y);
+            squareLines << QPoint(square[1].x,square[1].y);
+            squareLines << QPoint(square[3].x,square[3].y);
+            painter.drawPolygon(squareLines);
+        }
+
+
     }
     if(allPolys.size() > 0) {
         for (int count = 0; count<allPolys.size();count++) {
@@ -116,8 +130,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
             polyLines << QPoint(triangle[1].x,triangle[1].y);
             polyLines << QPoint(triangle[2].x,triangle[2].y);
             painter.drawPolygon(polyLines);
-
-
         }
     }
 
@@ -153,7 +165,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
             polyLines << QPoint(trap[1].x,trap[1].y);
             polyLines << QPoint(trap[3].x,trap[3].y);
             painter.drawPolygon(polyLines);
-            clicks++;
         }
     }
 
@@ -176,32 +187,36 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     QPoint coords = QCursor::pos();
     mapFromGlobal(QCursor::pos());
     if (clicks != 0) {
-        Awidth = Awidth = x1 - (coords.x()-130);
-        Aheight = y1 - (coords.y()-120);
-        if (type ==3 && clicks > 1) {
-            PolyPoints[PolyPoints.size()-1] = {coords.x()-130,coords.y()-120};
+        if ((type == 1) && (clicks > 1)) {
+            square[1] = {coords.x()-130,coords.y()-120};
+            square[2] = {square[0].x,square[1].y};
+            square[3] = {square[1].x,square[0].y};
         }
+
         if ((type == 2) && (clicks > 1)) {
             triangle[1] = {coords.x()-130,coords.y()-120};
             triangle[2] = {(triangle[0].x),(triangle[1].y)};
         }
         if ((type == 4) && (clicks > 1)){
-            std::cout<<"running"<<std::endl;
             trap[1] = {coords.x()-130,coords.y()-120};
             trap[2] = {(trap[0].x+(trap[0].x/5)),trap[1].y};
             trap[3] = {(trap[1].x+(trap[1].x/5)),trap[0].y};
+        }
+
+        if (type ==3 && clicks > 1) {
+            PolyPoints[PolyPoints.size()-1] = {coords.x()-130,coords.y()-120};
         }
     }
         if (type == 0) {
             if (drawing == true) {
                 annotationLabel->setGeometry(coords.x()-120,coords.y()-120,100,20);
                 if (editingType == "Polygon") {
-                    if (editingJ != allPolys[editingI].size()) {
+                    if (editingJ != allPolys[editingI].size()-1) {
                         allPolys[editingI][editingJ] = {coords.x()-130,coords.y()-120};
                       }
                     else {
                         allPolys[editingI][editingJ] = {coords.x()-130,coords.y()-120};
-                        //allPolys[editingI][0] = {coords.x()-130,coords.y()-120};
+                        allPolys[editingI][0] = {coords.x()-130,coords.y()-120};
                     }
                 }
                 if (editingType == "Triangle") {
@@ -209,6 +224,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
                 }
                 if (editingType == "Trap") {
                     Trapeziums[editingI][editingJ] = {coords.x()-130,coords.y()-120};
+                }
+                if (editingType == "Square") {
+                    Squares[editingI][editingJ] = {coords.x()-130,coords.y()-120};
                 }
             }
 
@@ -229,17 +247,22 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
                     QPolygon temp = moveItem(Trapeziums,coords.x()-130,coords.y()-120);
                     Trapeziums[editingI] = temp;
                 }
+                if (editingType =="Square") {
+                    QPolygon temp = moveItem(Squares,coords.x()-130,coords.y()-120);
+                    Squares[editingI] = temp;
+                }
+            }
+            if (resizing == true) {
+                if (editingType == "Triangle") {
+                    std::cout<<"Resizing"<<std::endl;
+                    Triangles[editingI] = resizeShape(Triangles[editingI]);
+                }
             }
         }
 
 
 
     repaint();
-}
-
-void MainWindow::setMoving() {
-    moving = true;
-    drawing = false;
 }
 
 QPolygon MainWindow::moveItem(std::vector<QPolygon> Shape,int x, int y){
@@ -260,9 +283,13 @@ void MainWindow::checkShape(std::vector<QPolygon> Shape, int x, int y) {
                 if (Shape[i].size() == 3) {
                     editShapes(i,j,"Triangle",x-130,y-120);
                 }
-                if (Shape[i].size() == 4) {
+                if (Shape[i].size() == 4 && (Shape[i][0].x() !=Shape[i][1].x())) {
                     editShapes(i,j,"Trap",x-130,y-120);
+                    std::cout<<"trap"<<std::endl;
                 }
+                else{ editShapes(i,j,"Square",x-130,y-120);
+                std::cout<<"Square"<<std::endl;
+                               }
             }
         }
     }
@@ -292,36 +319,54 @@ void MainWindow::copyItem(){
             }
         }
         if (editingType == "Triangle") {
-            tempShape.push_back({Triangles[editingI][0].x(),Triangles[editingI][0].y()});
-            for (int count = 1; count< 3;count++){
-                tempShape.push_back({Triangles[editingI][count].x()-Triangles[editingI][count-1].x(),Triangles[editingI][count].y()-Triangles[editingI][count-1].y()});
-            }
+           copyShape(Triangles);
+        }
+        if (editingType == "Trap") {
+            copyShape(Trapeziums);
+        }
+        if (editingType == "Square") {
+            copyShape(Squares);
         }
 }
 
 
+void MainWindow::copyShape(std:: vector<QPolygon> Shape) {
+    tempShape.push_back({Shape[editingI][0].x(),Shape[editingI][0].y()});
+    for (int count = 1; count< Shape[editingI].size();count++){
+        tempShape.push_back({Shape[editingI][count].x()-Shape[editingI][count-1].x(),Shape[editingI][count].y()-Shape[editingI][count-1].y()});
+    }
+}
+
+QPolygon pasteShape(int x,int y) {
+    std::vector<coords> storedShape;
+    QPolygon shapeLines;
+    storedShape.push_back({x,y});
+    shapeLines << QPoint{x,y};
+    for (int i = 1; i<tempShape.size(); i++) {
+        shapeLines << QPoint({tempShape[i].x+storedShape[i-1].x,tempShape[i].y+storedShape[i-1].y});
+        storedShape.push_back({tempShape[i].x+storedShape[i-1].x,tempShape[i].y+storedShape[i-1].y});
+    }
+    return shapeLines;
+}
 
 void MainWindow::pasteItem(){
+    QPoint clickedCoords = QCursor::pos();
     std::vector<coords> pushShape;
-    QPoint coords = QCursor::pos();
     if (editingType == "Polygon") {
-        mapFromGlobal(QCursor::pos());
-        pushShape.push_back({coords.x()-130,coords.y()-120});
+        pushShape.push_back({clickedCoords.x()-130,clickedCoords.y()-120});
         for (int i = 1; i<tempShape.size()-1; i++) {
             pushShape.push_back({tempShape[i].x+pushShape[i-1].x,tempShape[i].y+pushShape[i-1].y});
         }
         allPolys.push_back(pushShape);
     }
     if (editingType == "Triangle") {
-        QPolygon triangleLines;
-        pushShape.push_back({coords.x()-130,coords.y()-120});
-        triangleLines << QPoint{coords.x()-130,coords.y()-120};
-        for (int i = 1; i<tempShape.size(); i++) {
-            triangleLines << QPoint({tempShape[i].x+pushShape[i-1].x,tempShape[i].y+pushShape[i-1].y});
-            pushShape.push_back({tempShape[i].x+pushShape[i-1].x,tempShape[i].y+pushShape[i-1].y});
-        }
-        Triangles.push_back(triangleLines);
-        triangleLines.clear();
+        Triangles.push_back(pasteShape(clickedCoords.x()-130,clickedCoords.y()-120));
+    }
+    if (editingType == "Trap") {
+        Trapeziums.push_back(pasteShape(clickedCoords.x()-130,clickedCoords.y()-120));
+    }
+    if (editingType == "Square") {
+        Squares.push_back(pasteShape(clickedCoords.x()-130,clickedCoords.y()-120));
     }
     repaint();
 }
@@ -341,6 +386,31 @@ void MainWindow::deleteItem(){
 void MainWindow::drawItem(){
     moving = false;
     drawing = true;
+    resizing = false;
+}
+
+void MainWindow::setResize() {
+    moving = false;
+    drawing = false;
+    resizing = true;
+}
+
+void MainWindow::setMoving() {
+    moving = true;
+    drawing = false;
+    resizing = false;
+
+}
+
+QPolygon MainWindow::resizeShape(QPolygon Shape){
+    int originX =Shape[2].x();
+    int originY =Shape[2].y();
+    QTransform trans;
+    trans=trans.scale(1.01,1.01);
+    Shape = trans.map(Shape);
+    Shape[2].setX(originX);
+    Shape[2].setY(originY);
+    return Shape;
 }
 
 void MainWindow::ShowContextMenu(const QPoint &pos) // this is a slot
@@ -355,7 +425,7 @@ void MainWindow::ShowContextMenu(const QPoint &pos) // this is a slot
     else {
         myMenu.addAction("Draw",this,SLOT(drawItem()));
     }
-    //myMenu.addAction("Resize",this,SLOT(resizeItem()));
+    myMenu.addAction("Resize",this,SLOT(setResize()));
     if (tempShape.size() >0) {
         myMenu.addAction("Paste",this,SLOT(pasteItem()));
     }
@@ -382,22 +452,32 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
         }
         checkShape(Triangles,coords.x(),coords.y());
         checkShape(Trapeziums,coords.x(),coords.y());
+        checkShape(Squares,coords.x(),coords.y());
    }
 
     //square
     if (type == 1) {
+        mapFromGlobal(QCursor::pos());
+        x1 = coords.x()-130;
+        y1 = coords.y()-120;
+
+        if(clicks == 4) {
+            clicks = 5;
+        }
+
+        if (clicks == 3) {
+            clicks = 4;
+        }
         if (clicks == 2) {
-            mapFromGlobal(QCursor::pos());
-            Awidth = x1 - (coords.x()-130);
-            Aheight = y1 - (coords.y()-120);
-            clicks = clicks+1;
+            square[1] = {x1,y1};
+            square[2] = {(square[0].x),(square[1].y)};
+            square[3] = {(square[1].x),square[0].y};
+            clicks = 3;
         }
 
         if (clicks == 1){
-            mapFromGlobal(QCursor::pos());
-            x1 = coords.x()-130;
-            y1 = coords.y()-120;
-            clicks++;
+            square[0] = {x1,y1};
+            clicks = 2;
         }
     }
 
@@ -407,12 +487,16 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
         x1 = coords.x()-130;
         y1 = coords.y()-120;
 
+        if(clicks == 4) {
+            clicks = 5;
+        }
+
         if(clicks == 3) {
             clicks = 4;
         }
 
         if (clicks == 2) {
-            triangle[1] = {x1,y1};
+            triangle[1] = {coords.x()-130,coords.y()-120};
             triangle[2] = {(triangle[0].x),(triangle[1].y)};
             clicks = 3;
 

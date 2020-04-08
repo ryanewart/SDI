@@ -45,9 +45,9 @@ public:
 
     int y1;
 
-    int Awidth;
+    int aWidth;
 
-    int Aheight;
+    int aHeight;
 
     int type;
 
@@ -71,7 +71,6 @@ private slots:
 
     void on_pushButton_3_clicked();
 
-<<<<<<< HEAD
     void editShapes(int index1,int index2,std::string type,int x, int y);
 
     void checkShape(std::vector<QPolygon> Shape,  int x, int y);
@@ -89,9 +88,14 @@ private slots:
     QPolygon moveItem(std::vector<QPolygon> Shape,int x, int y);
 
     void drawItem();
-=======
+
     void on_treeView_doubleClicked(const QModelIndex &index);
->>>>>>> 85fb838bda6699be036e0a4d1ceefe53b340ce85
+
+    void copyShape(std:: vector<QPolygon>);
+
+    QPolygon resizeShape(QPolygon Shape);
+
+    void setResize();
 
 private:
     Ui::MainWindow *ui;
