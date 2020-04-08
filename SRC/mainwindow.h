@@ -6,6 +6,7 @@
 #include <iostream>
 #include<QPainter>
 #include<vector>
+#include <algorithm>
 #include<list>
 #include "LinkedList.h"
 
@@ -35,6 +36,7 @@ public:
 
     std::vector<int> allCoords;
 
+    std:: vector<QPolygon> Triangles;
 
     int clicks = 0;
 
@@ -67,6 +69,24 @@ private slots:
     void on_actionOpen_triggered();
 
     void on_pushButton_3_clicked();
+
+    void editShapes(int index1,int index2,std::string type,int x, int y);
+
+    void checkShape(std::vector<QPolygon> Shape,  int x, int y);
+
+    void ShowContextMenu(const QPoint&);
+
+    void copyItem();
+
+    void deleteItem();
+
+    void pasteItem();
+
+    void setMoving();
+
+    QPolygon moveItem(std::vector<QPolygon> Shape,int x, int y);
+
+    void drawItem();
 
 private:
     Ui::MainWindow *ui;
