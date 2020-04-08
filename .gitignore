@@ -1,2 +1,4 @@
 *.o
 *.autosave
+.DS_Store
+
