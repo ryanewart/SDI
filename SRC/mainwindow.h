@@ -99,9 +99,20 @@ private slots:
 
     //QPolygon assignShape(coords Shape[]);
 
+    void on_btn_OpenClass_clicked();
+
+    void on_btn_AddClass_clicked();
+
+    void on_btn_RemoveClass_clicked();
+
+    void on_btn_ModifyClass_clicked();
+
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *dirModel;
+    QString classFilePath;
+
+    void updateFile();
 };
 #endif // MAINWINDOW_H
 

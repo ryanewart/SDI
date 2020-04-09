@@ -13,9 +13,10 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QListView>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -35,7 +36,6 @@ public:
     QAction *actionSave_As;
     QAction *actionTest;
     QWidget *centralwidget;
-    QListView *ClassFinder;
     QGroupBox *groupBox;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
@@ -44,6 +44,13 @@ public:
     QPushButton *pushButton_5;
     QTreeView *treeView;
     QLabel *labelMainPic;
+    QListWidget *listWidget;
+    QWidget *widget;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *btn_OpenClass;
+    QPushButton *btn_AddClass;
+    QPushButton *btn_RemoveClass;
+    QPushButton *btn_ModifyClass;
     QMenuBar *menubar;
     QMenu *menuFile;
     QStatusBar *statusbar;
@@ -65,9 +72,6 @@ public:
         actionTest->setObjectName(QString::fromUtf8("actionTest"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        ClassFinder = new QListView(centralwidget);
-        ClassFinder->setObjectName(QString::fromUtf8("ClassFinder"));
-        ClassFinder->setGeometry(QRect(680, 680, 589, 171));
         groupBox = new QGroupBox(centralwidget);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
         groupBox->setGeometry(QRect(1130, 0, 120, 411));
@@ -94,7 +98,44 @@ public:
         labelMainPic = new QLabel(centralwidget);
         labelMainPic->setObjectName(QString::fromUtf8("labelMainPic"));
         labelMainPic->setGeometry(QRect(50, 20, 1021, 631));
+        listWidget = new QListWidget(centralwidget);
+        listWidget->setObjectName(QString::fromUtf8("listWidget"));
+        listWidget->setGeometry(QRect(680, 680, 581, 171));
+        widget = new QWidget(centralwidget);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(680, 640, 571, 32));
+        horizontalLayout = new QHBoxLayout(widget);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        btn_OpenClass = new QPushButton(widget);
+        btn_OpenClass->setObjectName(QString::fromUtf8("btn_OpenClass"));
+
+        horizontalLayout->addWidget(btn_OpenClass);
+
+        btn_AddClass = new QPushButton(widget);
+        btn_AddClass->setObjectName(QString::fromUtf8("btn_AddClass"));
+
+        horizontalLayout->addWidget(btn_AddClass);
+
+        btn_RemoveClass = new QPushButton(widget);
+        btn_RemoveClass->setObjectName(QString::fromUtf8("btn_RemoveClass"));
+
+        horizontalLayout->addWidget(btn_RemoveClass);
+
+        btn_ModifyClass = new QPushButton(widget);
+        btn_ModifyClass->setObjectName(QString::fromUtf8("btn_ModifyClass"));
+
+        horizontalLayout->addWidget(btn_ModifyClass);
+
         MainWindow->setCentralWidget(centralwidget);
+        labelMainPic->raise();
+        groupBox->raise();
+        treeView->raise();
+        btn_OpenClass->raise();
+        btn_AddClass->raise();
+        btn_RemoveClass->raise();
+        btn_ModifyClass->raise();
+        listWidget->raise();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 1260, 22));
@@ -130,6 +171,10 @@ public:
         pushButton_4->setText(QCoreApplication::translate("MainWindow", "Polygon", nullptr));
         pushButton_5->setText(QCoreApplication::translate("MainWindow", "Clear", nullptr));
         labelMainPic->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        btn_OpenClass->setText(QCoreApplication::translate("MainWindow", "Open", nullptr));
+        btn_AddClass->setText(QCoreApplication::translate("MainWindow", "Add", nullptr));
+        btn_RemoveClass->setText(QCoreApplication::translate("MainWindow", "Remove", nullptr));
+        btn_ModifyClass->setText(QCoreApplication::translate("MainWindow", "Modify", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
 
