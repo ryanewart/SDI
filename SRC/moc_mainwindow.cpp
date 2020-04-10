@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[17];
-    char stringdata0[272];
+    QByteArrayData data[41];
+    char stringdata0[566];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -46,9 +46,33 @@ QT_MOC_LITERAL(10, 132, 23), // "on_pushButton_5_clicked"
 QT_MOC_LITERAL(11, 156, 23), // "on_pushButton_4_clicked"
 QT_MOC_LITERAL(12, 180, 23), // "on_actionOpen_triggered"
 QT_MOC_LITERAL(13, 204, 23), // "on_pushButton_3_clicked"
-QT_MOC_LITERAL(14, 228, 25), // "on_treeView_doubleClicked"
-QT_MOC_LITERAL(15, 254, 11), // "QModelIndex"
-QT_MOC_LITERAL(16, 266, 5) // "index"
+QT_MOC_LITERAL(14, 228, 10), // "editShapes"
+QT_MOC_LITERAL(15, 239, 6), // "index1"
+QT_MOC_LITERAL(16, 246, 6), // "index2"
+QT_MOC_LITERAL(17, 253, 11), // "std::string"
+QT_MOC_LITERAL(18, 265, 4), // "type"
+QT_MOC_LITERAL(19, 270, 1), // "x"
+QT_MOC_LITERAL(20, 272, 1), // "y"
+QT_MOC_LITERAL(21, 274, 10), // "checkShape"
+QT_MOC_LITERAL(22, 285, 21), // "std::vector<QPolygon>"
+QT_MOC_LITERAL(23, 307, 5), // "Shape"
+QT_MOC_LITERAL(24, 313, 15), // "ShowContextMenu"
+QT_MOC_LITERAL(25, 329, 8), // "copyItem"
+QT_MOC_LITERAL(26, 338, 10), // "deleteItem"
+QT_MOC_LITERAL(27, 349, 9), // "pasteItem"
+QT_MOC_LITERAL(28, 359, 9), // "setMoving"
+QT_MOC_LITERAL(29, 369, 8), // "moveItem"
+QT_MOC_LITERAL(30, 378, 8), // "drawItem"
+QT_MOC_LITERAL(31, 387, 25), // "on_treeView_doubleClicked"
+QT_MOC_LITERAL(32, 413, 11), // "QModelIndex"
+QT_MOC_LITERAL(33, 425, 5), // "index"
+QT_MOC_LITERAL(34, 431, 9), // "copyShape"
+QT_MOC_LITERAL(35, 441, 11), // "resizeShape"
+QT_MOC_LITERAL(36, 453, 9), // "setResize"
+QT_MOC_LITERAL(37, 463, 24), // "on_btn_OpenClass_clicked"
+QT_MOC_LITERAL(38, 488, 23), // "on_btn_AddClass_clicked"
+QT_MOC_LITERAL(39, 512, 26), // "on_btn_RemoveClass_clicked"
+QT_MOC_LITERAL(40, 539, 26) // "on_btn_ModifyClass_clicked"
 
     },
     "MainWindow\0mouseMoveEvent\0\0QMouseEvent*\0"
@@ -56,9 +80,17 @@ QT_MOC_LITERAL(16, 266, 5) // "index"
     "on_pushButton_clicked\0on_pushButton_2_clicked\0"
     "mousePressEvent\0on_pushButton_5_clicked\0"
     "on_pushButton_4_clicked\0on_actionOpen_triggered\0"
-    "on_pushButton_3_clicked\0"
+    "on_pushButton_3_clicked\0editShapes\0"
+    "index1\0index2\0std::string\0type\0x\0y\0"
+    "checkShape\0std::vector<QPolygon>\0Shape\0"
+    "ShowContextMenu\0copyItem\0deleteItem\0"
+    "pasteItem\0setMoving\0moveItem\0drawItem\0"
     "on_treeView_doubleClicked\0QModelIndex\0"
-    "index"
+    "index\0copyShape\0resizeShape\0setResize\0"
+    "on_btn_OpenClass_clicked\0"
+    "on_btn_AddClass_clicked\0"
+    "on_btn_RemoveClass_clicked\0"
+    "on_btn_ModifyClass_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -68,7 +100,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+      26,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -76,16 +108,32 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   64,    2, 0x08 /* Private */,
-       5,    1,   67,    2, 0x08 /* Private */,
-       7,    0,   70,    2, 0x08 /* Private */,
-       8,    0,   71,    2, 0x08 /* Private */,
-       9,    1,   72,    2, 0x08 /* Private */,
-      10,    0,   75,    2, 0x08 /* Private */,
-      11,    0,   76,    2, 0x08 /* Private */,
-      12,    0,   77,    2, 0x08 /* Private */,
-      13,    0,   78,    2, 0x08 /* Private */,
-      14,    1,   79,    2, 0x08 /* Private */,
+       1,    1,  144,    2, 0x08 /* Private */,
+       5,    1,  147,    2, 0x08 /* Private */,
+       7,    0,  150,    2, 0x08 /* Private */,
+       8,    0,  151,    2, 0x08 /* Private */,
+       9,    1,  152,    2, 0x08 /* Private */,
+      10,    0,  155,    2, 0x08 /* Private */,
+      11,    0,  156,    2, 0x08 /* Private */,
+      12,    0,  157,    2, 0x08 /* Private */,
+      13,    0,  158,    2, 0x08 /* Private */,
+      14,    5,  159,    2, 0x08 /* Private */,
+      21,    3,  170,    2, 0x08 /* Private */,
+      24,    1,  177,    2, 0x08 /* Private */,
+      25,    0,  180,    2, 0x08 /* Private */,
+      26,    0,  181,    2, 0x08 /* Private */,
+      27,    0,  182,    2, 0x08 /* Private */,
+      28,    0,  183,    2, 0x08 /* Private */,
+      29,    3,  184,    2, 0x08 /* Private */,
+      30,    0,  191,    2, 0x08 /* Private */,
+      31,    1,  192,    2, 0x08 /* Private */,
+      34,    1,  195,    2, 0x08 /* Private */,
+      35,    1,  198,    2, 0x08 /* Private */,
+      36,    0,  201,    2, 0x08 /* Private */,
+      37,    0,  202,    2, 0x08 /* Private */,
+      38,    0,  203,    2, 0x08 /* Private */,
+      39,    0,  204,    2, 0x08 /* Private */,
+      40,    0,  205,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -97,7 +145,23 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 15,   16,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int, 0x80000000 | 17, QMetaType::Int, QMetaType::Int,   15,   16,   18,   19,   20,
+    QMetaType::Void, 0x80000000 | 22, QMetaType::Int, QMetaType::Int,   23,   19,   20,
+    QMetaType::Void, QMetaType::QPoint,    2,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::QPolygon, 0x80000000 | 22, QMetaType::Int, QMetaType::Int,   23,   19,   20,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 32,   33,
+    QMetaType::Void, 0x80000000 | 22,    2,
+    QMetaType::QPolygon, QMetaType::QPolygon,   23,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -117,7 +181,25 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 6: _t->on_pushButton_4_clicked(); break;
         case 7: _t->on_actionOpen_triggered(); break;
         case 8: _t->on_pushButton_3_clicked(); break;
-        case 9: _t->on_treeView_doubleClicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
+        case 9: _t->editShapes((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< std::string(*)>(_a[3])),(*reinterpret_cast< int(*)>(_a[4])),(*reinterpret_cast< int(*)>(_a[5]))); break;
+        case 10: _t->checkShape((*reinterpret_cast< std::vector<QPolygon>(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
+        case 11: _t->ShowContextMenu((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 12: _t->copyItem(); break;
+        case 13: _t->deleteItem(); break;
+        case 14: _t->pasteItem(); break;
+        case 15: _t->setMoving(); break;
+        case 16: { QPolygon _r = _t->moveItem((*reinterpret_cast< std::vector<QPolygon>(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])));
+            if (_a[0]) *reinterpret_cast< QPolygon*>(_a[0]) = std::move(_r); }  break;
+        case 17: _t->drawItem(); break;
+        case 18: _t->on_treeView_doubleClicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
+        case 19: _t->copyShape((*reinterpret_cast< std::vector<QPolygon>(*)>(_a[1]))); break;
+        case 20: { QPolygon _r = _t->resizeShape((*reinterpret_cast< QPolygon(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< QPolygon*>(_a[0]) = std::move(_r); }  break;
+        case 21: _t->setResize(); break;
+        case 22: _t->on_btn_OpenClass_clicked(); break;
+        case 23: _t->on_btn_AddClass_clicked(); break;
+        case 24: _t->on_btn_RemoveClass_clicked(); break;
+        case 25: _t->on_btn_ModifyClass_clicked(); break;
         default: ;
         }
     }
@@ -152,13 +234,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 26)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 26;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 10)
+        if (_id < 26)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 10;
+        _id -= 26;
     }
     return _id;
 }

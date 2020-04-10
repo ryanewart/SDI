@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QPolygon>
+#include <QInputDialog>
+#include <QTextStream>
 
 
 
@@ -703,4 +705,93 @@ void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
      } catch (...) {
         ui->labelMainPic->setText("Invalid file format");
      }
+}
+
+void MainWindow::on_btn_OpenClass_clicked()
+{
+    classFilePath = QFileDialog::getOpenFileName(this, tr("Open file"), "/", tr("Name Files (*.names)"));
+    QStringList newListObjects;
+    try {
+
+        QFile file(classFilePath);
+        if(!file.open(QIODevice::ReadOnly)) {
+            QMessageBox::information(this, "error", file.errorString());
+        }
+        QTextStream in(&file);
+
+        while(!in.atEnd()) {
+            newListObjects.append(in.readLine());
+        }
+        file.close();
+
+       ui->listWidget->clear();
+       ui->listWidget->addItems(newListObjects);
+
+    } catch (...) {
+        QMessageBox::information(this, "Error", "There has been an error with the file");
+    }
+
+
+}
+
+void MainWindow::on_btn_AddClass_clicked()
+{
+    //Ask the user for a class
+    QString newClass = QInputDialog::getText(this, tr("Input a New Class"), tr("New Class:"), QLineEdit::Normal);
+    //Append to the listWidget
+    ui->listWidget->addItem(newClass);
+    //Append to the class file (How to parse the path)
+    if (classFilePath != ""){
+        QFile file(classFilePath);
+        file.open(QIODevice::Append);
+
+        if (!file.isOpen()){
+            QMessageBox::information(this, "error", file.errorString());
+        }
+
+        QTextStream outputStream(&file);
+
+        outputStream << newClass << "\n";
+        file.close();
+    } else {
+
+    }
+}
+
+void MainWindow::on_btn_RemoveClass_clicked()
+{
+    //Remove from the list
+    qDeleteAll(ui->listWidget->selectedItems());
+    QMessageBox::information(this, "error", tr("Removed from class"));
+    //Remove from the file -> re write all item - create function
+    updateFile();
+}
+
+void MainWindow::updateFile(){
+    QFile file(classFilePath);
+    file.open(QIODevice::WriteOnly);
+
+    if(!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::information(this, "error", file.errorString());
+    }
+
+    for (int i = 0; i < ui->listWidget->count(); i++) {
+         QListWidgetItem * item = ui->listWidget->item(i);
+         QString className = item->text();
+         QTextStream outStream(&file);
+         outStream << className << " \n";
+    }
+
+    file.close();
+}
+
+void MainWindow::on_btn_ModifyClass_clicked()
+{
+    //Get index of selected item
+    QList<QListWidgetItem*> selectedItem = ui->listWidget->selectedItems();
+    //Pop up box to get the new name
+    QString renamedClass = QInputDialog::getText(this, tr("Input the modified name"), tr("New Class Name:"), QLineEdit::Normal);
+    selectedItem[0]->setText(renamedClass);
+    //UpdateFile
+    updateFile();
 }

@@ -14,16 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QListView" name="ClassFinder">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>680</y>
-      <width>589</width>
-      <height>171</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
@@ -118,6 +108,80 @@
      </rect>
     </property>
    </widget>
+<<<<<<< HEAD
+=======
+   <widget class="QLabel" name="labelMainPic">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>20</y>
+      <width>1021</width>
+      <height>631</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>680</y>
+      <width>581</width>
+      <height>171</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>640</y>
+      <width>571</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="btn_OpenClass">
+       <property name="text">
+        <string>Open</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_AddClass">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_RemoveClass">
+       <property name="text">
+        <string>Remove</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_ModifyClass">
+       <property name="text">
+        <string>Modify</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <zorder>labelMainPic</zorder>
+   <zorder>groupBox</zorder>
+   <zorder>treeView</zorder>
+   <zorder>btn_OpenClass</zorder>
+   <zorder>btn_AddClass</zorder>
+   <zorder>btn_RemoveClass</zorder>
+   <zorder>btn_ModifyClass</zorder>
+   <zorder>listWidget</zorder>
+>>>>>>> 5c076a7b046dce50a9c042484a7ebdef14a30c6f
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
