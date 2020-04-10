@@ -108,8 +108,6 @@
      </rect>
     </property>
    </widget>
-<<<<<<< HEAD
-=======
    <widget class="QLabel" name="labelMainPic">
     <property name="geometry">
      <rect>
@@ -181,7 +179,6 @@
    <zorder>btn_RemoveClass</zorder>
    <zorder>btn_ModifyClass</zorder>
    <zorder>listWidget</zorder>
->>>>>>> 5c076a7b046dce50a9c042484a7ebdef14a30c6f
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

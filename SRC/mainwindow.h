@@ -104,9 +104,9 @@ private slots:
 
     //QPolygon assignShape(coords Shape[]);
 
-<<<<<<< HEAD
+
 private:   
-=======
+
     void on_btn_OpenClass_clicked();
 
     void on_btn_AddClass_clicked();
@@ -116,7 +116,7 @@ private:
     void on_btn_ModifyClass_clicked();
 
 private:
->>>>>>> 5c076a7b046dce50a9c042484a7ebdef14a30c6f
+
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     QFileSystemModel *dirModel;
