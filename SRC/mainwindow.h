@@ -104,9 +104,6 @@ private slots:
 
     //QPolygon assignShape(coords Shape[]);
 
-
-private:   
-
     void on_btn_OpenClass_clicked();
 
     void on_btn_AddClass_clicked();
@@ -123,6 +120,7 @@ private:
     QString classFilePath;
 
     void updateFile();
+    void addClassToLW();
 };
 #endif // MAINWINDOW_H
 
