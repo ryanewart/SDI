@@ -74,11 +74,9 @@ void MainWindow::paintEvent(QPaintEvent *event)
         reloadImage();
         QPixmap test;
         int count = 0;
-        //QImage tmp2(ui->labelMainPic->pixmap()->toImage());
         QImage tmp(ui->labelMainPic->pixmap()->toImage());
         QPainter painter(&tmp);
 
-        //QPainter painter(this);
 
         painter.setBrush(Qt::DiagCrossPattern);
 
@@ -134,7 +132,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
                 }
         }
 
-        if (type == 2) {
+        if (type == 2) { //Polygon
             QPolygon polyLines;
             if (clicks == 4) {
                 polyLines << QPoint(triangle[0].x,triangle[0].y);
