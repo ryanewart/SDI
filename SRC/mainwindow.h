@@ -8,6 +8,9 @@
 #include<QPainter>
 #include<vector>
 #include <algorithm>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsItem>
 #include<list>
 #include "LinkedList.h"
 
@@ -93,14 +96,17 @@ private slots:
 
     void copyShape(std:: vector<QPolygon>);
 
-    QPolygon resizeShape(QPolygon Shape);
+    QPolygon resizeShape(QPolygon Shape,double diff);
 
     void setResize();
 
+    void reloadImage();
+
     //QPolygon assignShape(coords Shape[]);
 
-private:
+private:   
     Ui::MainWindow *ui;
+    QGraphicsScene *scene;
     QFileSystemModel *dirModel;
 };
 #endif // MAINWINDOW_H
