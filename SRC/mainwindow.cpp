@@ -8,6 +8,7 @@
 #include <QPolygon>
 #include <QInputDialog>
 #include <QTextStream>
+#include <QStandardPaths>
 
 
 
@@ -736,6 +737,12 @@ void MainWindow::on_btn_OpenClass_clicked()
 
 void MainWindow::on_btn_AddClass_clicked()
 {
+    if (classFilePath == ""){
+        QString renamedClass = QInputDialog::getText(this, tr("Create a new class file"), tr("Class file name: "), QLineEdit::Normal);
+        renamedClass = renamedClass.trimmed();
+        classFilePath = QDir::homePath() + "/" + renamedClass + ".names";
+    }
+
     //Ask the user for a class
     QString newClass = QInputDialog::getText(this, tr("Input a New Class"), tr("New Class:"), QLineEdit::Normal);
     //Append to the listWidget
@@ -753,10 +760,13 @@ void MainWindow::on_btn_AddClass_clicked()
 
         outputStream << newClass << "\n";
         file.close();
-    } else {
-
     }
 }
+
+void MainWindow::addClassToLW(){
+
+}
+
 
 void MainWindow::on_btn_RemoveClass_clicked()
 {
@@ -767,7 +777,7 @@ void MainWindow::on_btn_RemoveClass_clicked()
     updateFile();
 }
 
-void MainWindow::updateFile(){
+void MainWindow::updateFile(){ //reWrites the current class selection file based on whats in the list widget
     QFile file(classFilePath);
     file.open(QIODevice::WriteOnly);
 
@@ -785,10 +795,15 @@ void MainWindow::updateFile(){
     file.close();
 }
 
-void MainWindow::on_btn_ModifyClass_clicked()
+void MainWindow::on_btn_ModifyClass_clicked() //Modifiys the name of the selected class
 {
     //Get index of selected item
     QList<QListWidgetItem*> selectedItem = ui->listWidget->selectedItems();
+
+    if (selectedItem.count() == 0){
+         QMessageBox::information(this, "error", tr("No class selected"));
+    }
+
     //Pop up box to get the new name
     QString renamedClass = QInputDialog::getText(this, tr("Input the modified name"), tr("New Class Name:"), QLineEdit::Normal);
     selectedItem[0]->setText(renamedClass);

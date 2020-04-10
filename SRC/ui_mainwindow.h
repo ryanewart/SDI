@@ -45,7 +45,7 @@ public:
     QTreeView *treeView;
     QLabel *labelMainPic;
     QListWidget *listWidget;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout;
     QPushButton *btn_OpenClass;
     QPushButton *btn_AddClass;
@@ -97,44 +97,41 @@ public:
         treeView->setGeometry(QRect(10, 680, 651, 171));
         labelMainPic = new QLabel(centralwidget);
         labelMainPic->setObjectName(QString::fromUtf8("labelMainPic"));
-        labelMainPic->setGeometry(QRect(50, 20, 1021, 631));
+        labelMainPic->setGeometry(QRect(50, 20, 1021, 601));
         listWidget = new QListWidget(centralwidget);
         listWidget->setObjectName(QString::fromUtf8("listWidget"));
         listWidget->setGeometry(QRect(680, 680, 581, 171));
-        widget = new QWidget(centralwidget);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(680, 640, 571, 32));
-        horizontalLayout = new QHBoxLayout(widget);
+        layoutWidget = new QWidget(centralwidget);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(680, 640, 571, 32));
+        horizontalLayout = new QHBoxLayout(layoutWidget);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        btn_OpenClass = new QPushButton(widget);
+        btn_OpenClass = new QPushButton(layoutWidget);
         btn_OpenClass->setObjectName(QString::fromUtf8("btn_OpenClass"));
 
         horizontalLayout->addWidget(btn_OpenClass);
 
-        btn_AddClass = new QPushButton(widget);
+        btn_AddClass = new QPushButton(layoutWidget);
         btn_AddClass->setObjectName(QString::fromUtf8("btn_AddClass"));
 
         horizontalLayout->addWidget(btn_AddClass);
 
-        btn_RemoveClass = new QPushButton(widget);
+        btn_RemoveClass = new QPushButton(layoutWidget);
         btn_RemoveClass->setObjectName(QString::fromUtf8("btn_RemoveClass"));
 
         horizontalLayout->addWidget(btn_RemoveClass);
 
-        btn_ModifyClass = new QPushButton(widget);
+        btn_ModifyClass = new QPushButton(layoutWidget);
         btn_ModifyClass->setObjectName(QString::fromUtf8("btn_ModifyClass"));
 
         horizontalLayout->addWidget(btn_ModifyClass);
 
         MainWindow->setCentralWidget(centralwidget);
+        layoutWidget->raise();
         labelMainPic->raise();
         groupBox->raise();
         treeView->raise();
-        btn_OpenClass->raise();
-        btn_AddClass->raise();
-        btn_RemoveClass->raise();
-        btn_ModifyClass->raise();
         listWidget->raise();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
