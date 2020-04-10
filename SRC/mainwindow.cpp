@@ -73,7 +73,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
     if (imageFound == true){
         reloadImage();
         QPixmap test;
-        QMessageBox PolyBox;
         int count = 0;
         //QImage tmp2(ui->labelMainPic->pixmap()->toImage());
         QImage tmp(ui->labelMainPic->pixmap()->toImage());
@@ -193,10 +192,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
             }
         }
         if (PolyPoints.size() == 9) {
-            PolyBox.setText("This shape can only have a maximum of 8 points");
-            PolyBox.exec();
-            PolyPoints.clear();
-            type = 0;
         }
         ui->labelMainPic->setPixmap(QPixmap::fromImage(tmp));
     }
@@ -582,8 +577,16 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
 
     //Polygon
     if  (type == 3) {
+        QMessageBox PolyBox;
         clicks = clicks+1;
         PolyPoints.push_back({coords.x()-130,coords.y()-120});
+        if (clicks > 8 ) {
+            PolyBox.setText("This shape can only have a maximum of 8 points");
+            PolyBox.exec();
+            PolyPoints.clear();
+            type = 0;
+            clicks = 0;
+        }
         }
 
     //trap
