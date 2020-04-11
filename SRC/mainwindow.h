@@ -12,7 +12,9 @@
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include<list>
+#include <QDebug>
 #include "LinkedList.h"
+//#include "annotation.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -54,6 +56,16 @@ public:
 
     int type;
 
+    std:: vector<QPolygon> Squares;
+
+    std:: vector<QPolygon> Trapeziums;
+
+    coords triangle[3];
+
+    coords square[4];
+
+    coords trap[4];
+
 private slots:
 
     void mouseMoveEvent(QMouseEvent *event)Q_DECL_OVERRIDE;
@@ -88,6 +100,7 @@ private slots:
 
     void setMoving();
 
+
     QPolygon moveItem(std::vector<QPolygon> Shape,int x, int y);
 
     void drawItem();
@@ -100,9 +113,9 @@ private slots:
 
     void setResize();
 
-    void reloadImage();
+    void reloadImage(QString imgPath);
 
-    //QPolygon assignShape(coords Shape[]);
+    QPolygon assignShape(coords Shape[]);
 
     void on_btn_OpenClass_clicked();
 
@@ -111,6 +124,10 @@ private slots:
     void on_btn_RemoveClass_clicked();
 
     void on_btn_ModifyClass_clicked();
+
+    void on_btn_SortList_clicked();
+
+    void on_actionSave_triggered();
 
 private:
 

@@ -13,20 +13,16 @@
 
 
 QLabel *annotationLabel = NULL;
-coords triangle[3];
-bool setup = false;
-coords square[4];
-coords trap[4];
+
 int prevX;
 bool imageFound = false;
 bool resizing = false;
 bool drawing;
 bool moving;
-std:: vector<coords> tempShape;
-std:: vector<QPolygon> Squares;
-std:: vector<QPolygon> Trapeziums;
 int editingI,editingJ;
+bool setup = false;
 std::string editingType;
+std:: vector<coords> tempShape;
 QString path;
 
 
@@ -60,7 +56,7 @@ MainWindow::~MainWindow()
 }
 
 
-QPolygon assignShape(coords Shape[]) {
+QPolygon MainWindow::assignShape(coords Shape[]) {
     QPolygon polyLines;
     polyLines << QPoint(Shape[0].x,Shape[0].y);
     polyLines << QPoint(Shape[2].x,Shape[2].y);
@@ -72,7 +68,7 @@ QPolygon assignShape(coords Shape[]) {
 void MainWindow::paintEvent(QPaintEvent *event)
 {
     if (imageFound == true){
-        reloadImage();
+        reloadImage(path);
         QPixmap test;
         int count = 0;
         QImage tmp(ui->labelMainPic->pixmap()->toImage());
@@ -211,21 +207,21 @@ coords& addCoordData(coords Shape[], int Size,  int x, int y, int addition = 0) 
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     QPoint coords = QCursor::pos();
-    mapFromGlobal(QCursor::pos());
+    //mapFromParent(QCursor::pos());
     if (clicks >1) {
-        addCoordData(square,4,1,1);
+        //addCoordData(square,4,1,1);
         if ((type == 1)) {
-            square[1] = {coords.x()-130,coords.y()-120};
+            square[1] = {coords.x(),coords.y()};
             square[2] = {square[0].x,square[1].y};
             square[3] = {square[1].x,square[0].y};
         }
 
         if ((type == 2)) {
-            triangle[1] = {coords.x()-130,coords.y()-120};
+            triangle[1] = {coords.x(),coords.y()};
             triangle[2] = {(triangle[0].x),(triangle[1].y)};
         }
         if ((type == 4)){
-            trap[1] = {coords.x()-130,coords.y()-120};
+            trap[1] = {coords.x(),coords.y()};
             trap[2] = {(trap[0].x+(trap[0].x/5)),trap[1].y};
             trap[3] = {(trap[1].x+(trap[1].x/5)),trap[0].y};
         }
@@ -236,24 +232,24 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     }
         if (type == 0) {
             if (drawing == true) {
-                annotationLabel->setGeometry(coords.x()-120,coords.y()-120,100,20);
+                annotationLabel->setGeometry(coords.x(),coords.y(),100,20);
                 if (editingType == "Polygon") {
                     if (editingJ != allPolys[editingI].size()-1) {
-                        allPolys[editingI][editingJ] = {coords.x()-130,coords.y()-120};
+                        allPolys[editingI][editingJ] = {coords.x(),coords.y()};
                       }
                     else {
-                        allPolys[editingI][editingJ] = {coords.x()-130,coords.y()-120};
-                        allPolys[editingI][0] = {coords.x()-130,coords.y()-120};
+                        allPolys[editingI][editingJ] = {coords.x(),coords.y()};
+                        allPolys[editingI][0] = {coords.x(),coords.y()};
                     }
                 }
                 if (editingType == "Triangle") {
-                    Triangles[editingI][editingJ] = {coords.x()-130,coords.y()-120};
+                    Triangles[editingI][editingJ] = {coords.x(),coords.y()};
                 }
                 if (editingType == "Trap") {
-                    Trapeziums[editingI][editingJ] = {coords.x()-130,coords.y()-120};
+                    Trapeziums[editingI][editingJ] = {coords.x(),coords.y()};
                 }
                 if (editingType == "Square") {
-                    Squares[editingI][editingJ] = {coords.x()-130,coords.y()-120};
+                    Squares[editingI][editingJ] = {coords.x(),coords.y()};
                 }
             }
 
@@ -262,20 +258,20 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
                     int xDiff = allPolys[editingI][editingJ].x;
                     int yDiff = allPolys[editingI][editingJ].y;
                     for (int i = 0; i<allPolys[editingI].size(); i++) {
-                        allPolys[editingI][i] = {(coords.x()-130)+(xDiff-allPolys[editingI][i].x),(coords.y()-120)+(yDiff-allPolys[editingI][i].y)};
+                        allPolys[editingI][i] = {(coords.x())+(xDiff-allPolys[editingI][i].x),(coords.y())+(yDiff-allPolys[editingI][i].y)};
 
                     }
                 }
                 if (editingType == "Triangle") {
-                    QPolygon temp = moveItem(Triangles,coords.x()-130,coords.y()-120);
+                    QPolygon temp = moveItem(Triangles,coords.x(),coords.y());
                     Triangles[editingI] = temp;
                     }
                 if (editingType =="Trap") {
-                    QPolygon temp = moveItem(Trapeziums,coords.x()-130,coords.y()-120);
+                    QPolygon temp = moveItem(Trapeziums,coords.x(),coords.y());
                     Trapeziums[editingI] = temp;
                 }
                 if (editingType =="Square") {
-                    QPolygon temp = moveItem(Squares,coords.x()-130,coords.y()-120);
+                    QPolygon temp = moveItem(Squares,coords.x(),coords.y());
                     Squares[editingI] = temp;
                 }
             }
@@ -300,7 +296,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
         }
 
 
-    prevX = coords.x()-130;
+    prevX = coords.x();
     repaint();
 }
 
@@ -318,7 +314,7 @@ QPolygon MainWindow::moveItem(std::vector<QPolygon> Shape,int x=1, int y =1){
 void MainWindow::checkShape(std::vector<QPolygon> Shape, int x, int y) {
     for (int i = 0; i<Shape.size();i++) {
         for (int j = 0; j<Shape[i].size(); j++){
-            if (((Shape[i][j].x() < (x-130)+10) && (Shape[i][j].x() > (x-130)-10)) && ((Shape[i][j].y() < (y-120)+10) && (Shape[i][j].y() > (y-120)-10))) {
+            if (((Shape[i][j].x() < (x)+10) && (Shape[i][j].x() > (x)-10)) && ((Shape[i][j].y() < (y)+10) && (Shape[i][j].y() > (y)-10))) {
                 if (Shape[i].size() == 3) {
                     editShapes(i,j,"Triangle",x-130,y-120);
                     break;
@@ -435,9 +431,15 @@ void MainWindow::drawItem(){
 }
 
 void MainWindow::setResize() {
-    moving = false;
-    drawing = false;
-    resizing = true;
+    if (resizing == false) {
+        moving = false;
+        drawing = false;
+        resizing = true;
+    }
+    else {
+        resizing = false;
+    }
+
 }
 
 void MainWindow::setMoving() {
@@ -457,13 +459,12 @@ QPolygon MainWindow::resizeShape(QPolygon Shape,double diff){
     }
     centX = centX/Shape.size();
     centY = centY/Shape.size();
-    //std::cout<<centX<<", "<<centY<<std::endl;
     //QPoint origin = Shape[1];
 
     for (int side = 0; side<Shape.size(); side++){
         diffX = centX - Shape[side].x();
         diffY = centY - Shape[side].y();
-        std::cout<<diffX<<", "<<diffY<<std::endl;
+        //std::cout<<diffX<<", "<<diffY<<std::endl;
         diffX = diffX*(1+diff);
         diffY = diffY*(1+diff);
         Shape[side] = {centX + diffX,centY+diffY};
@@ -497,7 +498,7 @@ void MainWindow::ShowContextMenu(const QPoint &pos) // this is a slot
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     QPoint coords = QCursor::pos();
-    mapFromGlobal(QCursor::pos());
+    //mapFromParent(QCursor::pos());
     if (drawing == true) {
         drawing = false;
         annotationLabel->hide();
@@ -511,7 +512,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     if (type == 0) {
         for (int i = 0; i<allPolys.size();i++) {
             for (int j = 0; j<allPolys[i].size();j++) {
-                if (((allPolys[i][j].x < (coords.x()-130)+10) && (allPolys[i][j].x > (coords.x()-130)-10)) && ((allPolys[i][j].y < (coords.y()-120)+10) && (allPolys[i][j].y > (coords.y()-120)-10))) {
+                if (((allPolys[i][j].x < (coords.x())+10) && (allPolys[i][j].x > (coords.x())-10)) && ((allPolys[i][j].y < (coords.y())+10) && (allPolys[i][j].y > (coords.y())-10))) {
                     editShapes(i,j,"Polygon",coords.x(),coords.y());
                 }
             }
@@ -523,9 +524,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
 
     //square
     if (type == 1) {
-        mapFromGlobal(QCursor::pos());
-        x1 = coords.x()-130;
-        y1 = coords.y()-120;
+        x1 = coords.x();//-130;
+        y1 = coords.y();//-120;
 
         if(clicks == 4) {
             clicks = 5;
@@ -549,9 +549,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
 
     //triangle
     if (type == 2) {
-        mapFromGlobal(QCursor::pos());
-        x1 = coords.x()-130;
-        y1 = coords.y()-120;
+        x1 = coords.x();
+        y1 = coords.y();
 
         if(clicks == 4) {
             clicks = 5;
@@ -562,7 +561,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
         }
 
         if (clicks == 2) {
-            triangle[1] = {coords.x()-130,coords.y()-120};
+            triangle[1] = {coords.x(),coords.y()};
             triangle[2] = {(triangle[0].x),(triangle[1].y)};
             clicks = 3;
 
@@ -578,7 +577,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     if  (type == 3) {
         QMessageBox PolyBox;
         clicks = clicks+1;
-        PolyPoints.push_back({coords.x()-130,coords.y()-120});
+        PolyPoints.push_back({coords.x(),coords.y()});
         if (clicks > 8 ) {
             PolyBox.setText("This shape can only have a maximum of 8 points");
             PolyBox.exec();
@@ -591,8 +590,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     //trap
     if (type == 4) {
             mapFromGlobal(QCursor::pos());
-            x1 = coords.x()-130;
-            y1 = coords.y()-120;
+            x1 = coords.x();
+            y1 = coords.y();
 
             if(clicks == 4) {
                 clicks = 5;
@@ -618,8 +617,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
 
         if ( clicks == 1) {
             mapFromGlobal(QCursor::pos());
-            x1 = coords.x()-130;
-            y1 = coords.y()-120;
+            x1 = coords.x();
+            y1 = coords.y();
             clicks = clicks+1;
             trap[0] = {x1,y1};
         }
@@ -665,45 +664,143 @@ void MainWindow::on_pushButton_3_clicked() //trap
     type = 4;
 }
 
+void MainWindow::on_actionSave_triggered() {
+    QString shapes[] = {"Triangle","Square","Trapeze"};
+    int noOfImages = 1; //Change to incorporate more images.
+    int noOfAnnotations = Triangles.size() + Squares.size() + Trapeziums.size();
+    std:: vector<std::vector<QPolygon>> totalShapes;
+    totalShapes.push_back(Triangles);
+    totalShapes.push_back(Squares);
+    totalShapes.push_back(Trapeziums);
+
+    QString fileLocation = QInputDialog::getText(this, QObject::tr("Input name of file"), QObject::tr("File name:"), QLineEdit::Normal);
+    if (fileLocation != ""){
+        //dialog to ask if they want to override
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(nullptr, "File Exists", "Override?", QMessageBox::Yes|QMessageBox::No);
+
+        if (reply == QMessageBox::Yes){
+            QFile file(fileLocation);
+            file.open(QIODevice::Append);
+
+            if (!file.isOpen()){
+                QMessageBox::information(this, "error", file.errorString());
+            }
+            else {
+                QTextStream outputStream(&file);
+
+                outputStream << noOfImages;
+                for (int i=0; i < noOfImages; i++){
+                    outputStream << ", " << path;
+                    }
+                outputStream << "\n";
+                //New line in file
+                outputStream << noOfAnnotations;
+                outputStream << "\n";
+
+                for (int j=0; j < noOfAnnotations; j++){
+                    outputStream << shapes[j]<< ", ";
+                    for (int k=0; k<totalShapes[j].size(); k++){
+                        for (int sides = 0; sides < totalShapes[j][k].size(); sides++) {
+                            QPoint point  = totalShapes[j][k][sides];
+                            outputStream << point.x() << "," <<point.y()<< "," ;
+                        }
+                    }
+                     outputStream << "\n";
+                }
+                file.close();
+            }
+
+         } else {
+            qDebug() << "Save cancelled";
+         }
+    }
+}
 
 void MainWindow::on_actionOpen_triggered()
 {
     try {
+        int count = 1;
+        QString File;
+        QString imageName;
+        QString filename = QFileDialog::getOpenFileName(
+                    this,
+                    tr("Open file"),
+                    "/",
+                    "Text Files (*.txt)");
 
-    QString filename = QFileDialog::getOpenFileName(
-                this,
-                tr("Open file"),
-                "/",
-                "Images (*.png *.jpg *.jpeg)");
+        if (!filename.isEmpty()){
+            QString msg = "You chose the file:\n";
+            QMessageBox::information(this, tr("File name"), msg.append(filename));
+        }
+        QFile loadFile(filename);
+        QTextStream in(&loadFile);
+        std::cout<<"Test"<<std::endl;
 
-    if (!filename.isEmpty()){
-        QString msg = "You chose the file:\n";
-        QMessageBox::information(this, tr("File name"), msg.append(filename));
-    }
+        while(!in.atEnd()){
+            for(int lineNo = 1; !in.atEnd(); ++lineNo){
+                QString line = in.readLine();
+                QStringList data = line.split(",");
+                if (lineNo == 1){
+                    QString noImages = data.at(0);
+                    for(int i = 1; i < data.size(); ++i){
+                        QStringList filepathList;
+                        File = data.at(i);
+                        filepathList.insert(i, File);
+                        std::string dispFile = File.toLocal8Bit().constData();
+                        std::cout<<dispFile<<std::endl;
+                    }
+                }
+                if (lineNo == 2){
+                    QString noShapes = data.at(0);
+                }
+                else{
+                    std::string shapeType = data.at(0).toLocal8Bit().constData();
+                    while (count < data.size()){
+                        if (shapeType == "Square") {
+                            coords Shape[] ={{data.at(count).toInt(),data.at(count+1).toInt()},{data.at(count+2).toInt(),data.at(count+3).toInt()},{data.at(count+4).toInt(),data.at(count+5).toInt()},{data.at(count+6).toInt(),data.at(count+7).toInt()}};
+                            QPolygon polygonShape = assignShape(Shape);
+                            Squares.push_back(polygonShape);
+                            count = count + 8;
+                        }
+                        if (shapeType == "Trapeze") {
+                            coords Shape[] ={{data.at(count).toInt(),data.at(count+1).toInt()},{data.at(count+2).toInt(),data.at(count+3).toInt()},{data.at(count+4).toInt(),data.at(count+5).toInt()},{data.at(count+6).toInt(),data.at(count+7).toInt()}};
+                            QPolygon polygonShape = assignShape(Shape);
+                            Trapeziums.push_back(polygonShape);
+                            count = count + 8;
+                        }
+                        if (shapeType == "Triangle") {
+                            coords Shape[] ={{data.at(count).toInt(),data.at(count+1).toInt()},{data.at(count+2).toInt(),data.at(count+3).toInt()},{data.at(count+4).toInt(),data.at(count+5).toInt()}};
+                            QPolygon polygonShape = assignShape(Shape);
+                            Trapeziums.push_back(polygonShape);
+                            count = count + 6;
+                        }
+                    }
+                }
+            }
+         }
+    loadFile.close();
 
-    QPixmap pix(filename);
-    int w = ui->labelMainPic->width();
-    int h = ui->labelMainPic->height();
 
-    ui->labelMainPic->setPixmap(pix.scaled(w,h, Qt::IgnoreAspectRatio));
+    reloadImage(File);
     } catch(const std::runtime_error& e) {
 
     }
 }
 
 
-void MainWindow::reloadImage(){
-    QPixmap image(path);
-    ui->labelMainPic->setPixmap(path);
+void MainWindow::reloadImage(QString imgPath = path){
+    QPixmap image(imgPath);
+    ui->labelMainPic->setPixmap(imgPath);
     ui->labelMainPic->setScaledContents(true);
-    imageFound = true;
 }
 
 void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
 {
     path = dirModel->fileInfo(index).absoluteFilePath();
     try {
-        reloadImage();
+        reloadImage(path);
+        imageFound = true;
      } catch (...) {
         ui->labelMainPic->setText("Invalid file format");
      }
@@ -811,3 +908,70 @@ void MainWindow::on_btn_ModifyClass_clicked() //Modifiys the name of the selecte
     //UpdateFile
     updateFile();
 }
+
+bool sorted(QStringList array,int high) {
+    for (int i = 0; i< high; i++) {
+        if (array[i] > array[i+1]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+QStringList quickSort(QStringList array,int pivot, int low){
+     QString temp;
+     int l = low;
+     int r = pivot -1;
+     while (r > l) {
+         if ((array[r] < array[pivot]) and (array[l] > array[pivot])) {
+             temp = array[r];
+             array[r] = array[l];
+             array[l] = temp;
+         }
+         else if (array[l] < array[pivot]) {
+             l = l + 1;
+             if (array[r] > array[pivot]) {
+                 r = r - 1;
+             }
+         }
+         else if (array[r] > array[pivot]) {
+             r = r - 1;
+             if (array[l] < array[pivot]) {
+                 l = l + 1;
+             }
+         }
+     }
+     if (array[pivot] < array[l]) {
+         temp = array[pivot];
+         array[pivot] = array[l];
+         array[l] = temp;
+     }
+     if (sorted(array,pivot) != true) {
+         quickSort(array, l-1, 0);
+         quickSort(array, pivot, l+1);
+     }
+    return array;
+}
+
+void MainWindow::on_btn_SortList_clicked() //Sorts the classes into alphabetical order.
+{
+    int itemCount = ui->listWidget->count();
+    if (itemCount > 1) {
+        QStringList items;
+        //std::string items[itemCount];
+        QString temp;
+        for (int i = 0; i< ui->listWidget->count(); i++) {
+            temp = ui->listWidget->item(i)->text();
+            items.append(temp);
+        }
+       items = quickSort(items,itemCount-1,0);
+       ui->listWidget->clear();
+       ui->listWidget->addItems(items);
+    }
+    else {
+        QMessageBox::information(this, "error", tr("No classes to sort"));
+    }
+
+}
+
+

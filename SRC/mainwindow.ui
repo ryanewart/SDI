@@ -163,6 +163,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="btn_SortList">
+       <property name="text">
+        <string>Sort</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btn_ModifyClass">
        <property name="text">
         <string>Modify</string>

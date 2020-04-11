@@ -4,6 +4,7 @@
 #include <QColor>
 #include "shapeclass.h"
 #include <fstream>
+#include "mainwindow.h"
 
 using namespace std;
 
@@ -17,10 +18,13 @@ public:
     void setCaption(string);
     QColor getColour();
     void setColour(QColor);
+    void createAnnotationFile();
+    void renameAnnotation();
     void saveAnnotation();
     void LoadAnnotation(); //Unsure on return type
     Annotation copyShape();
     string getImgPath();
+    int noOfImages;
 
 private:
     string caption;
@@ -28,8 +32,10 @@ private:
     QColor annColour;
     int noOfAnnotations;
     string fileName;
-    string imgPath;
+    QString imgPath;
     bool fileExists(string);
+    QString TypeOfShape;
+
 };
 
 #endif // ANNOTATION_H
