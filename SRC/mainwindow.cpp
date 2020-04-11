@@ -720,6 +720,7 @@ void MainWindow::on_actionSave_triggered() {
 void MainWindow::on_actionOpen_triggered()
 {
     try {
+        QStringList filepathList;
         int count = 1;
         QString File;
         QString imageName;
@@ -735,54 +736,49 @@ void MainWindow::on_actionOpen_triggered()
         }
         QFile loadFile(filename);
         QTextStream in(&loadFile);
-        std::cout<<"Test"<<std::endl;
-
-        while(!in.atEnd()){
-            for(int lineNo = 1; !in.atEnd(); ++lineNo){
-                QString line = in.readLine();
-                QStringList data = line.split(",");
-                if (lineNo == 1){
-                    QString noImages = data.at(0);
-                    for(int i = 1; i < data.size(); ++i){
-                        QStringList filepathList;
-                        File = data.at(i);
-                        filepathList.insert(i, File);
-                        std::string dispFile = File.toLocal8Bit().constData();
-                        std::cout<<dispFile<<std::endl;
-                    }
-                }
-                if (lineNo == 2){
-                    QString noShapes = data.at(0);
-                }
-                else{
-                    std::string shapeType = data.at(0).toLocal8Bit().constData();
-                    while (count < data.size()){
-                        if (shapeType == "Square") {
-                            coords Shape[] ={{data.at(count).toInt(),data.at(count+1).toInt()},{data.at(count+2).toInt(),data.at(count+3).toInt()},{data.at(count+4).toInt(),data.at(count+5).toInt()},{data.at(count+6).toInt(),data.at(count+7).toInt()}};
-                            QPolygon polygonShape = assignShape(Shape);
-                            Squares.push_back(polygonShape);
-                            count = count + 8;
-                        }
-                        if (shapeType == "Trapeze") {
-                            coords Shape[] ={{data.at(count).toInt(),data.at(count+1).toInt()},{data.at(count+2).toInt(),data.at(count+3).toInt()},{data.at(count+4).toInt(),data.at(count+5).toInt()},{data.at(count+6).toInt(),data.at(count+7).toInt()}};
-                            QPolygon polygonShape = assignShape(Shape);
-                            Trapeziums.push_back(polygonShape);
-                            count = count + 8;
-                        }
-                        if (shapeType == "Triangle") {
-                            coords Shape[] ={{data.at(count).toInt(),data.at(count+1).toInt()},{data.at(count+2).toInt(),data.at(count+3).toInt()},{data.at(count+4).toInt(),data.at(count+5).toInt()}};
-                            QPolygon polygonShape = assignShape(Shape);
-                            Trapeziums.push_back(polygonShape);
-                            count = count + 6;
-                        }
-                    }
-                }
+        if(!loadFile.open(QIODevice::ReadOnly)) {
+            QMessageBox::information(this, "error", loadFile.errorString());
+        }
+        QString line = in.readLine();
+        QStringList data = line.split(",");
+        File = data.at(1);
+        line = in.readLine();
+        for(int i = 1; i < data.size(); ++i){
+            File = data.at(i);
+            filepathList.insert(i, File);
+        }
+        while (!in.atEnd()) {
+            int count = 1;
+            line = in.readLine();
+            data = line.split(",");
+            std::string shapeType = data.at(0).toLocal8Bit().constData();
+            if (shapeType == "Square") {
+                coords Shape[] ={{data.at(count).toInt(),data.at(count+1).toInt()},{data.at(count+4).toInt(),data.at(count+5).toInt()},{data.at(count+2).toInt(),data.at(count+3).toInt()},{data.at(count+6).toInt(),data.at(count+7).toInt()}};
+                QPolygon polygonShape = assignShape(Shape);
+                Squares.push_back(polygonShape);
+                count = count + 8;
             }
-         }
+            if (shapeType == "Trapeze") {
+                coords Shape[] ={{data.at(count).toInt(),data.at(count+1).toInt()},{data.at(count+4).toInt(),data.at(count+5).toInt()},{data.at(count+2).toInt(),data.at(count+3).toInt()},{data.at(count+6).toInt(),data.at(count+7).toInt()}};
+                QPolygon polygonShape = assignShape(Shape);
+                Trapeziums.push_back(polygonShape);
+                count = count + 8;
+            }
+            if (shapeType == "Triangle") {
+                coords Shape[] ={{data.at(count).toInt(),data.at(count+1).toInt()},{data.at(count+2).toInt(),data.at(count+3).toInt()},{data.at(count+4).toInt(),data.at(count+5).toInt()}};
+                QPolygon polygonShape; //= assignShape(Shape);
+                polygonShape << QPoint({data.at(count).toInt(),data.at(count+1).toInt()});
+                polygonShape << QPoint({data.at(count+2).toInt(),data.at(count+3).toInt()});
+                polygonShape << QPoint({data.at(count+4).toInt(),data.at(count+5).toInt()});
+                Triangles.push_back(polygonShape);
+                count = count + 6;
+            }
+        }
     loadFile.close();
 
-
-    reloadImage(File);
+    path = File;
+    reloadImage(path);
+    imageFound = true;
     } catch(const std::runtime_error& e) {
 
     }
