@@ -243,12 +243,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
 
             if (moving == true){
                 if (editingType == "Polygon") {
-                    int xDiff = Polygons[editingI][editingJ].x();
-                    int yDiff = Polygons[editingI][editingJ].y();
-                    for (int i = 0; i<Polygons[editingI].size(); i++) {
-                        Polygons[editingI][i] = {(coords.x())+(xDiff-Polygons[editingI][i].x()),(coords.y())+(yDiff-Polygons[editingI][i].y())};
+                    QPolygon temp = moveItem(Polygons,coords.x(),coords.y());
+                    Polygons[editingI] = temp;
 
-                    }
                 }
                 if (editingType == "Triangle") {
                     QPolygon temp = moveItem(Triangles,coords.x(),coords.y());
@@ -263,6 +260,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
                     Squares[editingI] = temp;
                 }
             }
+
             if (resizing == true) {
                 if (editingType == "Triangle") {
                     if (coords.x() > prevX) {
@@ -280,13 +278,18 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
                         Trapeziums[editingI] = resizeShape(Trapeziums[editingI],0.01);
 
                 }
+                if (editingType == "Polygon") {
+                        Polygons[editingI] = resizeShape(Polygons[editingI],0.01);
+
+                }
             }
+
         }
 
-
-    prevX = coords.x();
-    repaint();
+        prevX = coords.x();
+        repaint();
 }
+
 
 QPolygon MainWindow::moveItem(std::vector<QPolygon> Shape,int x=1, int y =1){
     QPolygon movingShape;
@@ -307,22 +310,28 @@ void MainWindow::checkShape(std::vector<QPolygon> Shape, int x, int y) {
                     editShapes(i,j,"Triangle",x-130,y-120);
                     break;
                 }
-                if (Shape[i].size() == 4 && (Shape[i][0].x() !=Shape[i][1].x())) {
+                else if (Shape[i].size() == 4 && (Shape[i][0].x() !=Shape[i][1].x())) {
                     editShapes(i,j,"Trap",x-130,y-120);
                     std::cout<<"trap"<<std::endl;
                     break;
                 }
-                else{ editShapes(i,j,"Square",x-130,y-120);
-                std::cout<<"Square"<<std::endl;
-                break;
+                else if(Shape[i].size() == 4 && (Shape[i][0].x() == Shape[i][1].x())) {
+                    editShapes(i,j,"Square",x-130,y-120);
+                    std::cout<<"Square"<<std::endl;
+                    break;
                 }
+                else {
+                    editShapes(i,j,"Polygon",x-130,y-120);
+                    std::cout<<"Polygon"<<std::endl;
+                    break;
+                }
+
             }
         }
     }
 }
 
 void MainWindow::editShapes(int index1,int index2,std::string type,int x, int y) {
-    std::cout<<"Polygon Clicked"<<std::endl;
     drawing = true;
     editingI = index1;
     editingJ = index2;
@@ -336,13 +345,9 @@ void MainWindow::editShapes(int index1,int index2,std::string type,int x, int y)
 
 void MainWindow::copyItem(){
         tempShape.clear();
-        if (editingType == "Polygon"){
-            int tempX = 0;
-            int tempY = 0;
-            tempShape.push_back({Polygons[editingI][0].x(),Polygons[editingI][0].y()});
-            for (int count = 1; count< Polygons[editingI].size()+1;count++){
-                tempShape.push_back({Polygons[editingI][count].x()-Polygons[editingI][count-1].x(),Polygons[editingI][count].y()-Polygons[editingI][count-1].y()});
-            }
+
+        if (editingType == "Polygon") {
+           copyShape(Polygons);
         }
         if (editingType == "Triangle") {
            copyShape(Triangles);
@@ -379,11 +384,7 @@ void MainWindow::pasteItem(){
     QPoint clickedCoords = QCursor::pos();
     std::vector<coords> pushShape;
     if (editingType == "Polygon") {
-        pushShape.push_back({clickedCoords.x()-130,clickedCoords.y()-120});
-        for (int i = 1; i<tempShape.size()-1; i++) {
-            pushShape.push_back({tempShape[i].x+pushShape[i-1].x,tempShape[i].y+pushShape[i-1].y});
-        }
-        //Polygons.push_back(pushShape);
+        Polygons.push_back(pasteShape(clickedCoords.x()-130,clickedCoords.y()-120));
     }
     if (editingType == "Triangle") {
         Triangles.push_back(pasteShape(clickedCoords.x()-130,clickedCoords.y()-120));
@@ -758,63 +759,66 @@ void MainWindow::on_actionOpen_triggered()
         if (!filename.isEmpty()){
             QString msg = "You chose the file:\n";
             QMessageBox::information(this, tr("File name"), msg.append(filename));
-        }
-        annotationFilePath = filename;
-        QFile loadFile(filename);
-        QTextStream in(&loadFile);
-        if(!loadFile.open(QIODevice::ReadOnly)) {
-            QMessageBox::information(this, "error", loadFile.errorString());
-        }
-        QString line = in.readLine();
-        QStringList data = line.split(",");
-        File = data.at(1);
-        for(int i = 1; i < data.size(); ++i){
-            File = data.at(i);
-            filepathList.insert(i, File);
-        }
-        QString shapeNo = in.readLine();
-        while (!in.atEnd()) {
-            int count = 1;
-            line = in.readLine();
-            data = line.split(",");
-            std::string shapeType = data.at(0).toLocal8Bit().constData();
-            if (data.size()>2) {
-                if (shapeType == "Square") {
-                    while(count<data.size()) {
-                        std::cout<<"Loading Square"<<std::endl;
-                        Squares.push_back(loadShapes(data,count,4));                      
-                        count = count + 8;
+
+            annotationFilePath = filename;
+            QFile loadFile(filename);
+            QTextStream in(&loadFile);
+            if(!loadFile.open(QIODevice::ReadOnly)) {
+                QMessageBox::information(this, "error", loadFile.errorString());
+            }
+            QString line = in.readLine();
+            QStringList data = line.split(",");
+            File = data.at(1);
+            for(int i = 1; i < data.size(); ++i){
+                File = data.at(i);
+                filepathList.insert(i, File);
+            }
+            QString shapeNo = in.readLine();
+            while (!in.atEnd()) {
+                int count = 1;
+                line = in.readLine();
+                data = line.split(",");
+                std::string shapeType = data.at(0).toLocal8Bit().constData();
+                if (data.size()>2) {
+                    if (shapeType == "Square") {
+                        while(count<data.size()) {
+                            std::cout<<"Loading Square"<<std::endl;
+                            Squares.push_back(loadShapes(data,count,4));
+                            count = count + 8;
+                        }
                     }
-                }
-                if (shapeType == "Trapeze") {
-                    while(count<data.size()) {
-                        std::cout<<"Loading Trapeze"<<std::endl;
-                        Trapeziums.push_back(loadShapes(data,count,4));
-                        count = count + 8;
+                    if (shapeType == "Trapeze") {
+                        while(count<data.size()) {
+                            std::cout<<"Loading Trapeze"<<std::endl;
+                            Trapeziums.push_back(loadShapes(data,count,4));
+                            count = count + 8;
+                        }
                     }
-                }
-                if (shapeType == "Triangle") {
-                    while(count<data.size()) {
-                        std::cout<<"Loading Triangle"<<std::endl;
-                        Triangles.push_back(loadShapes(data,count,3));
-                        count = count + 6;
+                    if (shapeType == "Triangle") {
+                        while(count<data.size()) {
+                            std::cout<<"Loading Triangle"<<std::endl;
+                            Triangles.push_back(loadShapes(data,count,3));
+                            count = count + 6;
+                        }
                     }
-                }
-                if (shapeType == "Polygon" or shapeType == "") {
-                    while(count<data.size()) {
-                        std::cout<<"Loading Polygon"<<std::endl;
-                        Polygons.push_back(loadShapes(data,count,(data.size()-1)/2));
-                        count = count + data.size()-1;
+                    if (shapeType == "Polygon" or shapeType == "") {
+                        while(count<data.size()) {
+                            std::cout<<"Loading Polygon"<<std::endl;
+                            Polygons.push_back(loadShapes(data,count,(data.size()-1)/2));
+                            count = count + data.size()-1;
+                        }
                     }
                 }
             }
-        }
-    loadFile.close();
+        loadFile.close();
 
-    path = File;
-    reloadImage(path);
-    imageFound = true;
-    } catch(const std::runtime_error& e) {
+        path = File;
+        reloadImage(path);
+        imageFound = true;
+        }
+
+    }
+    catch(const std::runtime_error& e) {
 
     }
 }
