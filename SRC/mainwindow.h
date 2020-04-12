@@ -36,13 +36,8 @@ public:
         int x,y;
     };
 
-    std::vector<coords> PolyPoints;
-
-    std::vector<std::vector<coords>> allPolys;
 
     std::vector<int> allCoords;
-
-    std:: vector<QPolygon> Triangles;
 
     int clicks = 0;
 
@@ -56,6 +51,8 @@ public:
 
     int type;
 
+    std:: vector<QPolygon> Triangles;
+
     std:: vector<QPolygon> Squares;
 
     std:: vector<QPolygon> Trapeziums;
@@ -65,6 +62,10 @@ public:
     coords square[4];
 
     coords trap[4];
+
+    std::vector<coords> PolyPoints;
+
+    std:: vector<QPolygon> Polygons;
 
 private slots:
 
@@ -115,7 +116,7 @@ private slots:
 
     void reloadImage(QString imgPath);
 
-    QPolygon assignShape(coords Shape[]);
+    QPolygon assignShape(coords Shape[],int size);
 
     void on_btn_OpenClass_clicked();
 
@@ -129,12 +130,19 @@ private slots:
 
     void on_actionSave_triggered();
 
+    void clearShapes();
+
+    void saveAnnotations();
+
+    QPolygon loadShapes(QStringList data, int count, int size);
+
 private:
 
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     QFileSystemModel *dirModel;
     QString classFilePath;
+    QString annotationFilePath;
 
     void updateFile();
     void addClassToLW();
