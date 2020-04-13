@@ -14,6 +14,8 @@
 
 QLabel *annotationLabel = NULL;
 
+
+int classIndex[100][1];
 int prevX;
 bool imageFound = false;
 bool resizing = false;
@@ -96,6 +98,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
                 squareLines = assignShape(square,4);
                 painter.drawPolygon(squareLines);
                 Squares.push_back(squareLines);
+                classIndex[type][Squares.size()-1] =  ui->listWidget->currentRow();
                 squareLines.clear();
                 clicks = 5;
                 type = 0;
@@ -108,18 +111,19 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
         }
 
-        if (type == 2) { //Polygon
+        if (type == 2) { //Triangle
             QPolygon triangleLines;
             if (clicks == 4) {
                 triangleLines = assignShape(triangle,3);
                 painter.drawPolygon(triangleLines);
                 Triangles.push_back(triangleLines);
+                classIndex[type][Triangles.size()-1] =  ui->listWidget->currentRow();
                 triangleLines.clear();
                 clicks = 5;
                 type = 0;
             }
 
-            if (clicks == 3) {//Triangle
+            if (clicks == 3) {
                 triangleLines = assignShape(triangle,3);
                 painter.drawPolygon(triangleLines);
 
@@ -137,6 +141,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
                     std::copy(PolyPoints.begin(), PolyPoints.end(), polygonArray);
                     type = 0;
                     Polygons.push_back(assignShape(polygonArray,PolyPoints.size()-1));
+                    classIndex[type][Polygons.size()-1] =  ui->listWidget->currentRow();
                     PolyPoints.clear();
 
             }
@@ -148,6 +153,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
                 trapLines = assignShape(trap,4);
                 painter.drawPolygon(trapLines);
                 Trapeziums.push_back(trapLines);
+                 classIndex[type][Trapeziums.size()-1] =  ui->listWidget->currentRow();
                 trapLines.clear();
                 clicks = 5;
                 type = 0;
@@ -307,21 +313,21 @@ void MainWindow::checkShape(std::vector<QPolygon> Shape, int x, int y) {
         for (int j = 0; j<Shape[i].size(); j++){
             if (((Shape[i][j].x() < (x)+10) && (Shape[i][j].x() > (x)-10)) && ((Shape[i][j].y() < (y)+10) && (Shape[i][j].y() > (y)-10))) {
                 if (Shape[i].size() == 3) {
-                    editShapes(i,j,"Triangle",x-130,y-120);
+                    editShapes(i,j,"Triangle",2,x-130,y-120);
                     break;
                 }
                 else if (Shape[i].size() == 4 && (Shape[i][0].x() !=Shape[i][1].x())) {
-                    editShapes(i,j,"Trap",x-130,y-120);
+                    editShapes(i,j,"Trap",4,x-130,y-120);
                     std::cout<<"trap"<<std::endl;
                     break;
                 }
                 else if(Shape[i].size() == 4 && (Shape[i][0].x() == Shape[i][1].x())) {
-                    editShapes(i,j,"Square",x-130,y-120);
+                    editShapes(i,j,"Square",1,x-130,y-120);
                     std::cout<<"Square"<<std::endl;
                     break;
                 }
                 else {
-                    editShapes(i,j,"Polygon",x-130,y-120);
+                    editShapes(i,j,"Polygon",4,x-130,y-120);
                     std::cout<<"Polygon"<<std::endl;
                     break;
                 }
@@ -331,15 +337,17 @@ void MainWindow::checkShape(std::vector<QPolygon> Shape, int x, int y) {
     }
 }
 
-void MainWindow::editShapes(int index1,int index2,std::string type,int x, int y) {
+void MainWindow::editShapes(int index1,int index2,std::string type,int num,int x, int y) {
     drawing = true;
     editingI = index1;
     editingJ = index2;
     editingType = type;
+    int classIndexNumber(classIndex[num][editingI]);
+    QString classDisplay = ui->listWidget->item(classIndexNumber)->text();;
     annotationLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    annotationLabel->setText("Annotation Test");
+    annotationLabel->setText(classDisplay);
     annotationLabel->setAlignment(Qt::AlignBottom | Qt::AlignRight);
-    annotationLabel->setGeometry(x-120,y-120,50,20);
+    annotationLabel->setGeometry(x,y,50,20);
     annotationLabel->show();
 }
 

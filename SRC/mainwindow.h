@@ -87,7 +87,7 @@ private slots:
 
     void on_pushButton_3_clicked();
 
-    void editShapes(int index1,int index2,std::string type,int x, int y);
+    void editShapes(int index1,int index2,std::string type,int num,int x, int y);
 
     void checkShape(std::vector<QPolygon> Shape,  int x, int y);
 
