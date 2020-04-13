@@ -944,7 +944,7 @@ void MainWindow::on_btn_ModifyClass_clicked() //Modifiys the name of the selecte
     updateFile();
 }
 
-bool sorted(QStringList array,int high) {
+bool sorted(std::string array[],int high) {
     for (int i = 0; i< high; i++) {
         if (array[i] > array[i+1]) {
             return false;
@@ -953,38 +953,38 @@ bool sorted(QStringList array,int high) {
     return true;
 }
 
-QStringList quickSort(QStringList array,int pivot, int low){
-     QString temp;
-     int l = low;
-     int r = pivot -1;
-     while (r > l) {
-         if ((array[r] < array[pivot]) and (array[l] > array[pivot])) {
-             temp = array[r];
-             array[r] = array[l];
-             array[l] = temp;
-         }
-         else if (array[l] < array[pivot]) {
-             l = l + 1;
-             if (array[r] > array[pivot]) {
-                 r = r - 1;
-             }
-         }
-         else if (array[r] > array[pivot]) {
-             r = r - 1;
-             if (array[l] < array[pivot]) {
-                 l = l + 1;
-             }
-         }
-     }
-     if (array[pivot] < array[l]) {
-         temp = array[pivot];
-         array[pivot] = array[l];
-         array[l] = temp;
-     }
-     if (sorted(array,pivot) != true) {
-         quickSort(array, l-1, 0);
-         quickSort(array, pivot, l+1);
-     }
+std::string* quickSort(std::string array[],int pivot, int low){
+        std::string temp;
+        int l = low;
+        int r = pivot -1;
+        while (r > l) {
+            if ((array[r] < array[pivot]) and (array[l] > array[pivot])) {
+                temp = array[r];
+                array[r] = array[l];
+                array[l] = temp;
+            }
+            else if (array[l] < array[pivot]) {
+                l = l + 1;
+                if (array[r] > array[pivot]) {
+                    r = r - 1;
+                }
+            }
+            else if (array[r] > array[pivot]) {
+                r = r - 1;
+                if (array[l] < array[pivot]) {
+                    l = l + 1;
+                }
+            }
+        }
+        if (array[pivot] < array[l]) {
+            temp = array[pivot];
+            array[pivot] = array[l];
+            array[l] = temp;
+        }
+        if (sorted(array,pivot) != true) {
+            quickSort(array, l-1, 0);
+            quickSort(array, pivot, l+1);
+        }
     return array;
 }
 
@@ -992,16 +992,22 @@ void MainWindow::on_btn_SortList_clicked() //Sorts the classes into alphabetical
 {
     int itemCount = ui->listWidget->count();
     if (itemCount > 1) {
-        QStringList items;
-        //std::string items[itemCount];
-        QString temp;
+        QStringList sortedItemList;
+        std::string items[itemCount];
+        //QString temp;
+        std::string temp;
         for (int i = 0; i< ui->listWidget->count(); i++) {
-            temp = ui->listWidget->item(i)->text();
-            items.append(temp);
+            temp = ui->listWidget->item(i)->text().toLocal8Bit().constData();;
+            items[i] = temp;
         }
-       items = quickSort(items,itemCount-1,0);
+       std:: string* sortedItems= quickSort(items,itemCount-1,0);
+       for (int i = 0; i< itemCount; i++) {
+        sortedItemList.push_back(QString::fromStdString(sortedItems[i]));
+       }
        ui->listWidget->clear();
-       ui->listWidget->addItems(items);
+       ui->listWidget->addItems(sortedItemList);
+
+
     }
     else {
         QMessageBox::information(this, "error", tr("No classes to sort"));
