@@ -674,34 +674,15 @@ void MainWindow::saveAnnotations() {
     totalShapes.push_back(Polygons);
 
     int noOfAnnotations = totalShapes.size();
+    QFile file(annotationFilePath);
 
-    if (annotationFilePath == ""){
-        QString newSave = QInputDialog::getText(this, tr("Create a new annotation file"), tr("Annotation file name: "), QLineEdit::Normal);
-        QString fileLocation = newSave.trimmed();
-        annotationFilePath = QDir::homePath() + "/" + newSave + ".annotations";
-        QFile file(annotationFilePath);
-    }
-
-    if (annotationFilePath != ""){
-        //dialog to ask if they want to override
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(nullptr, "File Exists", "Override?", QMessageBox::Yes|QMessageBox::No);
-
-        if (reply == QMessageBox::Yes){
-            QFile file(annotationFilePath);
-            file.open(QIODevice::Append);
-
-            if (!file.isOpen()){
-                QMessageBox::information(this, "error", file.errorString());
-            }
-            else {
-                QTextStream outputStream(&file);
-
-                outputStream << noOfImages;
-                for (int i=0; i < noOfImages; i++){
-                    outputStream << "," << path;
-                    }
-                outputStream << "\n";
+    file.open(QIODevice::WriteOnly);
+    QTextStream outputStream(&file);
+    outputStream << noOfImages;
+        for (int i=0; i < noOfImages; i++){
+            outputStream << "," << path;
+        }
+    outputStream << "\n";
                 //New line in file
                 outputStream << noOfAnnotations;
                 outputStream << "\n";
@@ -720,17 +701,41 @@ void MainWindow::saveAnnotations() {
                      outputStream << "\n";
                 }
                 file.close();
-            }
-
-         } else {
-            qDebug() << "Save cancelled";
-         }
-    }
 
 }
 
 void MainWindow::on_actionSave_triggered() {
-    saveAnnotations();
+        if (annotationFilePath == ""){
+            QString newSave = QInputDialog::getText(this, tr("Create a new annotation file"), tr("Annotation file name: "), QLineEdit::Normal);
+            QString fileLocation = newSave.trimmed();
+            annotationFilePath = QDir::homePath() + "/" + newSave + ".annotations";
+        }
+
+        else if (annotationFilePath != ""){
+            //dialog to ask if they want to override
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(nullptr, "File Exists", "Override?", QMessageBox::Yes|QMessageBox::No);
+            if (reply == QMessageBox::No){
+                QString newSave = QInputDialog::getText(this, tr("Create a new annotation file"), tr("Annotation file name: "), QLineEdit::Normal);
+                QString fileLocation = newSave.trimmed();
+                annotationFilePath = QDir::homePath() + "/" + newSave + ".annotations";
+            }
+        }
+
+        saveAnnotations();
+
+}
+
+void MainWindow::on_actionSave_As_triggered() {
+    if (imageFound) {
+        QString newSave = QInputDialog::getText(this, tr("Create a new annotation file"), tr("Annotation file name: "), QLineEdit::Normal);
+        QString fileLocation = newSave.trimmed();
+        annotationFilePath = QDir::homePath() + "/" + newSave + ".annotations";
+        saveAnnotations();
+    }
+    else {
+
+    }
 }
 
 QPolygon MainWindow::loadShapes(QStringList data, int count, int size) {
@@ -754,7 +759,6 @@ void MainWindow::on_actionOpen_triggered()
                 saveAnnotations();
             }
         }
-        clearShapes();
         QStringList filepathList;
         QString File;
         QString imageName;
@@ -767,7 +771,7 @@ void MainWindow::on_actionOpen_triggered()
         if (!filename.isEmpty()){
             QString msg = "You chose the file:\n";
             QMessageBox::information(this, tr("File name"), msg.append(filename));
-
+            clearShapes();
             annotationFilePath = filename;
             QFile loadFile(filename);
             QTextStream in(&loadFile);
@@ -818,11 +822,10 @@ void MainWindow::on_actionOpen_triggered()
                     }
                 }
             }
-        loadFile.close();
-
-        path = File;
-        reloadImage(path);
-        imageFound = true;
+            loadFile.close();
+            path = File;
+            reloadImage(path);
+            imageFound = true;
         }
 
     }
