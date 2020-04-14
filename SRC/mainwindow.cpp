@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "mythread.h"
 #include <QPixmap>
 #include <iostream>
 #include <list>
@@ -50,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->treeView->setAnimated(true);
     ui->treeView->setColumnWidth(0, ui->treeView->width()/2);
 
+    autoSaveThread = new saveThread();
+    connect(autoSaveThread, SIGNAL(callSave()), this, SLOT(onSaveCalled()));
 }
 
 MainWindow::~MainWindow()
@@ -819,7 +822,6 @@ void MainWindow::on_actionOpen_triggered()
                 }
             }
         loadFile.close();
-
         path = File;
         reloadImage(path);
         imageFound = true;
@@ -844,6 +846,8 @@ void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
     try {
         reloadImage(path);
         imageFound = true;
+        autoSaveThread->start();
+        qDebug() << "Autosave thread started";
      } catch (...) {
         ui->labelMainPic->setText("Invalid file format");
      }
@@ -903,11 +907,6 @@ void MainWindow::on_btn_AddClass_clicked()
         file.close();
     }
 }
-
-void MainWindow::addClassToLW(){
-
-}
-
 
 void MainWindow::on_btn_RemoveClass_clicked()
 {
@@ -1022,4 +1021,7 @@ void MainWindow::on_btn_SortList_clicked() //Sorts the classes into alphabetical
     }
 }
 
-
+void MainWindow::onSaveCalled(){
+    saveAnnotations();
+    qDebug() << "Saved";
+}

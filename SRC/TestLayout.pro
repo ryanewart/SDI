@@ -21,6 +21,7 @@ SOURCES += \
     itemclass.cpp \
     main.cpp \
     mainwindow.cpp \
+    mythread.cpp \
     polygonclass.cpp \
     shapeclass.cpp \
     #Tests/project-tests.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     annotation.h \
     itemclass.h \
     mainwindow.h \
+    mythread.h \
     polygonclass.h \
     shapeclass.h
 

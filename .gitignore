@@ -1,5 +1,5 @@
 *.o
 *.autosave
-.DS_Store
+*.DS_Store
 
 SRC/TestLayout.pro.user

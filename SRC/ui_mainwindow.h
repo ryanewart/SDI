@@ -50,6 +50,7 @@ public:
     QPushButton *btn_OpenClass;
     QPushButton *btn_AddClass;
     QPushButton *btn_RemoveClass;
+    QPushButton *btn_SortList;
     QPushButton *btn_ModifyClass;
     QMenuBar *menubar;
     QMenu *menuFile;
@@ -122,6 +123,11 @@ public:
 
         horizontalLayout->addWidget(btn_RemoveClass);
 
+        btn_SortList = new QPushButton(layoutWidget);
+        btn_SortList->setObjectName(QString::fromUtf8("btn_SortList"));
+
+        horizontalLayout->addWidget(btn_SortList);
+
         btn_ModifyClass = new QPushButton(layoutWidget);
         btn_ModifyClass->setObjectName(QString::fromUtf8("btn_ModifyClass"));
 
@@ -147,7 +153,6 @@ public:
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave);
         menuFile->addAction(actionSave_As);
-        menuFile->addAction(actionTest);
 
         retranslateUi(MainWindow);
 
@@ -171,6 +176,7 @@ public:
         btn_OpenClass->setText(QCoreApplication::translate("MainWindow", "Open", nullptr));
         btn_AddClass->setText(QCoreApplication::translate("MainWindow", "Add", nullptr));
         btn_RemoveClass->setText(QCoreApplication::translate("MainWindow", "Remove", nullptr));
+        btn_SortList->setText(QCoreApplication::translate("MainWindow", "Sort", nullptr));
         btn_ModifyClass->setText(QCoreApplication::translate("MainWindow", "Modify", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
