@@ -15,6 +15,7 @@
 #include <QDebug>
 #include "LinkedList.h"
 //#include "annotation.h"
+#include "mythread.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -67,6 +68,9 @@ public:
 
     std:: vector<QPolygon> Polygons;
 
+public slots:
+    void onSaveCalled();
+
 private slots:
 
     void mouseMoveEvent(QMouseEvent *event)Q_DECL_OVERRIDE;
@@ -100,7 +104,6 @@ private slots:
     void pasteItem();
 
     void setMoving();
-
 
     QPolygon moveItem(std::vector<QPolygon> Shape,int x, int y);
 
@@ -146,8 +149,12 @@ private:
     QString classFilePath;
     QString annotationFilePath;
 
+    saveThread * autoSaveThread;
+
+
     void updateFile();
     void addClassToLW();
+
 };
 #endif // MAINWINDOW_H
 
