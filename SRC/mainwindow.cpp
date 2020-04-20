@@ -835,18 +835,10 @@ void MainWindow::on_actionOpen_triggered()
                     }
                 }
             }
-<<<<<<< HEAD
-
         loadFile.close();
         path = File;
         reloadImage(path);
         imageFound = true;
-=======
-            loadFile.close();
-            path = File;
-            reloadImage(path);
-            imageFound = true;
->>>>>>> 40008a9048901db9bba44f99655f5a5abc63279e
         }
 
     }
@@ -1080,6 +1072,7 @@ void MainWindow::onSaveCalled(){
 
 void MainWindow::on_btn_SearchList_clicked()
 {
+    qDebug() << "Reached";
     int itemCount = ui->listWidget->count();
     if (itemCount > 1) {
         std::string items[itemCount];
@@ -1095,5 +1088,30 @@ void MainWindow::on_btn_SearchList_clicked()
                 ui->listWidget->setCurrentRow(pos);
             }
         }
+    }
+}
+
+void MainWindow::on_btn_SortList_3_clicked()
+{
+    int itemCount = ui->listWidget->count();
+    if (itemCount > 1) {
+        QStringList sortedItemList;
+        std::string items[itemCount];
+        std::string temp;
+        for (int i = 0; i< ui->listWidget->count(); i++) {
+            temp = ui->listWidget->item(i)->text().toLocal8Bit().constData();
+            items[i] = temp;
+        }
+       std:: string* sortedItems= quickSort(items,itemCount-1,0);
+       for (int i = 0; i< itemCount; i++) {
+        sortedItemList.push_front(QString::fromStdString(sortedItems[i]));
+       }
+       ui->listWidget->clear();
+       ui->listWidget->addItems(sortedItemList);
+
+
+    }
+    else {
+        QMessageBox::information(this, "error", tr("No classes to sort"));
     }
 }

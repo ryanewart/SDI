@@ -52,6 +52,7 @@ public:
     QPushButton *btn_RemoveClass;
     QPushButton *btn_SortList;
     QPushButton *btn_ModifyClass;
+    QPushButton *btn_SearchList;
     QMenuBar *menubar;
     QMenu *menuFile;
     QStatusBar *statusbar;
@@ -133,6 +134,11 @@ public:
 
         horizontalLayout->addWidget(btn_ModifyClass);
 
+        btn_SearchList = new QPushButton(layoutWidget);
+        btn_SearchList->setObjectName(QString::fromUtf8("btn_SearchList"));
+
+        horizontalLayout->addWidget(btn_SearchList);
+
         MainWindow->setCentralWidget(centralwidget);
         layoutWidget->raise();
         labelMainPic->raise();
@@ -178,6 +184,7 @@ public:
         btn_RemoveClass->setText(QCoreApplication::translate("MainWindow", "Remove", nullptr));
         btn_SortList->setText(QCoreApplication::translate("MainWindow", "Sort", nullptr));
         btn_ModifyClass->setText(QCoreApplication::translate("MainWindow", "Modify", nullptr));
+        btn_SearchList->setText(QCoreApplication::translate("MainWindow", "Search", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
 
