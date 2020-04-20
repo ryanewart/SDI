@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[57];
-    char stringdata0[759];
+    QByteArrayData data[59];
+    char stringdata0[811];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -88,7 +88,9 @@ QT_MOC_LITERAL(52, 709, 11), // "clearShapes"
 QT_MOC_LITERAL(53, 721, 15), // "saveAnnotations"
 QT_MOC_LITERAL(54, 737, 10), // "loadShapes"
 QT_MOC_LITERAL(55, 748, 4), // "data"
-QT_MOC_LITERAL(56, 753, 5) // "count"
+QT_MOC_LITERAL(56, 753, 5), // "count"
+QT_MOC_LITERAL(57, 759, 25), // "on_btn_SearchList_clicked"
+QT_MOC_LITERAL(58, 785, 25) // "on_btn_SortList_3_clicked"
 
     },
     "MainWindow\0onSaveCalled\0\0mouseMoveEvent\0"
@@ -111,7 +113,9 @@ QT_MOC_LITERAL(56, 753, 5) // "count"
     "on_btn_ModifyClass_clicked\0"
     "on_btn_SortList_clicked\0on_actionSave_triggered\0"
     "on_actionSave_As_triggered\0clearShapes\0"
-    "saveAnnotations\0loadShapes\0data\0count"
+    "saveAnnotations\0loadShapes\0data\0count\0"
+    "on_btn_SearchList_clicked\0"
+    "on_btn_SortList_3_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -121,7 +125,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      35,   14, // methods
+      37,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -129,41 +133,43 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  189,    2, 0x0a /* Public */,
-       3,    1,  190,    2, 0x08 /* Private */,
-       6,    1,  193,    2, 0x08 /* Private */,
-       8,    0,  196,    2, 0x08 /* Private */,
-       9,    0,  197,    2, 0x08 /* Private */,
-      10,    1,  198,    2, 0x08 /* Private */,
-      11,    0,  201,    2, 0x08 /* Private */,
-      12,    0,  202,    2, 0x08 /* Private */,
-      13,    0,  203,    2, 0x08 /* Private */,
-      14,    0,  204,    2, 0x08 /* Private */,
-      15,    6,  205,    2, 0x08 /* Private */,
-      23,    3,  218,    2, 0x08 /* Private */,
-      26,    1,  225,    2, 0x08 /* Private */,
-      27,    0,  228,    2, 0x08 /* Private */,
-      28,    0,  229,    2, 0x08 /* Private */,
-      29,    0,  230,    2, 0x08 /* Private */,
-      30,    0,  231,    2, 0x08 /* Private */,
-      31,    3,  232,    2, 0x08 /* Private */,
-      32,    0,  239,    2, 0x08 /* Private */,
-      33,    1,  240,    2, 0x08 /* Private */,
-      36,    1,  243,    2, 0x08 /* Private */,
-      37,    2,  246,    2, 0x08 /* Private */,
-      39,    0,  251,    2, 0x08 /* Private */,
-      40,    1,  252,    2, 0x08 /* Private */,
-      42,    2,  255,    2, 0x08 /* Private */,
-      45,    0,  260,    2, 0x08 /* Private */,
-      46,    0,  261,    2, 0x08 /* Private */,
-      47,    0,  262,    2, 0x08 /* Private */,
-      48,    0,  263,    2, 0x08 /* Private */,
-      49,    0,  264,    2, 0x08 /* Private */,
-      50,    0,  265,    2, 0x08 /* Private */,
-      51,    0,  266,    2, 0x08 /* Private */,
-      52,    0,  267,    2, 0x08 /* Private */,
-      53,    0,  268,    2, 0x08 /* Private */,
-      54,    3,  269,    2, 0x08 /* Private */,
+       1,    0,  199,    2, 0x0a /* Public */,
+       3,    1,  200,    2, 0x08 /* Private */,
+       6,    1,  203,    2, 0x08 /* Private */,
+       8,    0,  206,    2, 0x08 /* Private */,
+       9,    0,  207,    2, 0x08 /* Private */,
+      10,    1,  208,    2, 0x08 /* Private */,
+      11,    0,  211,    2, 0x08 /* Private */,
+      12,    0,  212,    2, 0x08 /* Private */,
+      13,    0,  213,    2, 0x08 /* Private */,
+      14,    0,  214,    2, 0x08 /* Private */,
+      15,    6,  215,    2, 0x08 /* Private */,
+      23,    3,  228,    2, 0x08 /* Private */,
+      26,    1,  235,    2, 0x08 /* Private */,
+      27,    0,  238,    2, 0x08 /* Private */,
+      28,    0,  239,    2, 0x08 /* Private */,
+      29,    0,  240,    2, 0x08 /* Private */,
+      30,    0,  241,    2, 0x08 /* Private */,
+      31,    3,  242,    2, 0x08 /* Private */,
+      32,    0,  249,    2, 0x08 /* Private */,
+      33,    1,  250,    2, 0x08 /* Private */,
+      36,    1,  253,    2, 0x08 /* Private */,
+      37,    2,  256,    2, 0x08 /* Private */,
+      39,    0,  261,    2, 0x08 /* Private */,
+      40,    1,  262,    2, 0x08 /* Private */,
+      42,    2,  265,    2, 0x08 /* Private */,
+      45,    0,  270,    2, 0x08 /* Private */,
+      46,    0,  271,    2, 0x08 /* Private */,
+      47,    0,  272,    2, 0x08 /* Private */,
+      48,    0,  273,    2, 0x08 /* Private */,
+      49,    0,  274,    2, 0x08 /* Private */,
+      50,    0,  275,    2, 0x08 /* Private */,
+      51,    0,  276,    2, 0x08 /* Private */,
+      52,    0,  277,    2, 0x08 /* Private */,
+      53,    0,  278,    2, 0x08 /* Private */,
+      54,    3,  279,    2, 0x08 /* Private */,
+      57,    0,  286,    2, 0x08 /* Private */,
+      58,    0,  287,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -201,6 +207,8 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::QPolygon, QMetaType::QStringList, QMetaType::Int, QMetaType::Int,   55,   56,   44,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -250,6 +258,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 33: _t->saveAnnotations(); break;
         case 34: { QPolygon _r = _t->loadShapes((*reinterpret_cast< QStringList(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])));
             if (_a[0]) *reinterpret_cast< QPolygon*>(_a[0]) = std::move(_r); }  break;
+        case 35: _t->on_btn_SearchList_clicked(); break;
+        case 36: _t->on_btn_SortList_3_clicked(); break;
         default: ;
         }
     }
@@ -284,13 +294,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 35)
+        if (_id < 37)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 35;
+        _id -= 37;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 35)
+        if (_id < 37)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 35;
+        _id -= 37;
     }
     return _id;
 }

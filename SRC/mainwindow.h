@@ -144,6 +144,8 @@ private slots:
 
     void on_btn_SearchList_clicked();
 
+    void on_btn_SortList_3_clicked();
+
 private:
 
     Ui::MainWindow *ui;
