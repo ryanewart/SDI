@@ -835,11 +835,18 @@ void MainWindow::on_actionOpen_triggered()
                     }
                 }
             }
+<<<<<<< HEAD
 
         loadFile.close();
         path = File;
         reloadImage(path);
         imageFound = true;
+=======
+            loadFile.close();
+            path = File;
+            reloadImage(path);
+            imageFound = true;
+>>>>>>> 40008a9048901db9bba44f99655f5a5abc63279e
         }
 
     }
