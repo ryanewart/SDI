@@ -52,6 +52,8 @@ public:
     QPushButton *btn_RemoveClass;
     QPushButton *btn_SortList;
     QPushButton *btn_ModifyClass;
+    QPushButton *btn_SearchList;
+    QPushButton *btn_SortList_3;
     QMenuBar *menubar;
     QMenu *menuFile;
     QStatusBar *statusbar;
@@ -133,12 +135,21 @@ public:
 
         horizontalLayout->addWidget(btn_ModifyClass);
 
+        btn_SearchList = new QPushButton(layoutWidget);
+        btn_SearchList->setObjectName(QString::fromUtf8("btn_SearchList"));
+
+        horizontalLayout->addWidget(btn_SearchList);
+
+        btn_SortList_3 = new QPushButton(centralwidget);
+        btn_SortList_3->setObjectName(QString::fromUtf8("btn_SortList_3"));
+        btn_SortList_3->setGeometry(QRect(964, 610, 98, 32));
         MainWindow->setCentralWidget(centralwidget);
         layoutWidget->raise();
         labelMainPic->raise();
         groupBox->raise();
         treeView->raise();
         listWidget->raise();
+        btn_SortList_3->raise();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 1260, 22));
@@ -176,8 +187,10 @@ public:
         btn_OpenClass->setText(QCoreApplication::translate("MainWindow", "Open", nullptr));
         btn_AddClass->setText(QCoreApplication::translate("MainWindow", "Add", nullptr));
         btn_RemoveClass->setText(QCoreApplication::translate("MainWindow", "Remove", nullptr));
-        btn_SortList->setText(QCoreApplication::translate("MainWindow", "Sort", nullptr));
+        btn_SortList->setText(QCoreApplication::translate("MainWindow", "Sort ASC", nullptr));
         btn_ModifyClass->setText(QCoreApplication::translate("MainWindow", "Modify", nullptr));
+        btn_SearchList->setText(QCoreApplication::translate("MainWindow", "Search", nullptr));
+        btn_SortList_3->setText(QCoreApplication::translate("MainWindow", "Sort DESC", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
 

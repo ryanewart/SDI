@@ -835,15 +835,21 @@ void MainWindow::on_actionOpen_triggered()
                     }
                 }
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a35913e9347331eeaff01daf5946c07950b5fed9
         loadFile.close();
         path = File;
         reloadImage(path);
         imageFound = true;
+<<<<<<< HEAD
             loadFile.close();
             path = File;
             reloadImage(path);
             imageFound = true;
+=======
+>>>>>>> a35913e9347331eeaff01daf5946c07950b5fed9
         }
 
     }
@@ -1079,12 +1085,18 @@ void MainWindow::onSaveCalled(){
 
 void MainWindow::on_btn_SearchList_clicked()
 {
+    qDebug() << "Reached";
     int itemCount = ui->listWidget->count();
+    std::string temp;
     if (itemCount > 1) {
         std::string items[itemCount];
-        std:: string* sortedItems= quickSort(items,itemCount-1,0);
+        for (int i = 0; i< ui->listWidget->count(); i++) {
+            temp = ui->listWidget->item(i)->text().toLocal8Bit().constData();
+            items[i] = temp;
+        }
+        std::string * sortedItems = quickSort(items, itemCount-1, 0);
         QString classSearch = QInputDialog::getText(this, tr("What Item do you want to search for?"), tr("Class name: "), QLineEdit::Normal);
-        std::string temp = classSearch.toUtf8().constData();
+        std::string temp = classSearch.toStdString();
         if (temp != "") {
             int pos = binarySearch(sortedItems,temp);
             if (pos == -1) {
@@ -1094,5 +1106,28 @@ void MainWindow::on_btn_SearchList_clicked()
                 ui->listWidget->setCurrentRow(pos);
             }
         }
+    }
+}
+
+void MainWindow::on_btn_SortList_3_clicked()
+{
+    int itemCount = ui->listWidget->count();
+    if (itemCount > 1) {
+        QStringList sortedItemList;
+        std::string items[itemCount];
+        std::string temp;
+        for (int i = 0; i< ui->listWidget->count(); i++) {
+            temp = ui->listWidget->item(i)->text().toLocal8Bit().constData();
+            items[i] = temp;
+        }
+       std:: string* sortedItems= quickSort(items,itemCount-1,0);
+       for (int i = 0; i < itemCount; i++) {
+        sortedItemList.push_front(QString::fromStdString(sortedItems[i]));
+       }
+       ui->listWidget->clear();
+       ui->listWidget->addItems(sortedItemList);
+    }
+    else {
+        QMessageBox::information(this, "error", tr("No classes to sort"));
     }
 }
