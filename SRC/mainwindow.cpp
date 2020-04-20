@@ -15,6 +15,10 @@
 
 QLabel *annotationLabel = NULL;
 
+struct classData {
+    int position;
+    std::string data;
+};
 
 int classIndex[100][1];
 int prevX;
@@ -27,6 +31,7 @@ bool setup = false;
 std::string editingType;
 std:: vector<coords> tempShape;
 QString path;
+std:: vector<classData> classDataIndex;
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -345,13 +350,16 @@ void MainWindow::editShapes(int index1,int index2,std::string type,int num,int x
     editingI = index1;
     editingJ = index2;
     editingType = type;
-    int classIndexNumber(classIndex[num][editingI]);
-    QString classDisplay = ui->listWidget->item(classIndexNumber)->text();;
-    annotationLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    annotationLabel->setText(classDisplay);
-    annotationLabel->setAlignment(Qt::AlignBottom | Qt::AlignRight);
-    annotationLabel->setGeometry(x,y,50,20);
-    annotationLabel->show();
+    if (ui->listWidget->count() != 0) {
+        int classIndexNumber = classIndex[num][editingI];
+        QString classDisplay = ui->listWidget->item(classIndexNumber)->text();
+        annotationLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+        annotationLabel->setText(classDisplay);
+        annotationLabel->setAlignment(Qt::AlignBottom | Qt::AlignRight);
+        annotationLabel->setGeometry(x,y,50,20);
+        annotationLabel->show();
+    }
+
 }
 
 void MainWindow::copyItem(){
@@ -685,7 +693,6 @@ void MainWindow::saveAnnotations() {
         for (int i=0; i < noOfImages; i++){
             outputStream << "," << path;
         }
-    outputStream << "\n";
                 //New line in file
                 outputStream << noOfAnnotations;
                 outputStream << "\n";
@@ -703,6 +710,9 @@ void MainWindow::saveAnnotations() {
                     }
                      outputStream << "\n";
                 }
+                outputStream << "\n";
+                outputStream << classFilePath;
+                outputStream << "\n";
                 file.close();
 
 }
@@ -825,17 +835,11 @@ void MainWindow::on_actionOpen_triggered()
                     }
                 }
             }
-<<<<<<< HEAD
-            loadFile.close();
-            path = File;
-            reloadImage(path);
-            imageFound = true;
-=======
+
         loadFile.close();
         path = File;
         reloadImage(path);
         imageFound = true;
->>>>>>> 00df107934a51494ab3f93c7a57ec55a1e983739
         }
 
     }
@@ -843,7 +847,6 @@ void MainWindow::on_actionOpen_triggered()
 
     }
 }
-
 
 void MainWindow::reloadImage(QString imgPath = path){
     QPixmap image(imgPath);
@@ -866,7 +869,9 @@ void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_btn_OpenClass_clicked()
 {
+    int count = 1;
     classFilePath = QFileDialog::getOpenFileName(this, tr("Open file"), "/", tr("Name Files (*.names)"));
+    QString tempItem;
     QStringList newListObjects;
     try {
 
@@ -877,7 +882,10 @@ void MainWindow::on_btn_OpenClass_clicked()
         QTextStream in(&file);
 
         while(!in.atEnd()) {
-            newListObjects.append(in.readLine());
+            tempItem = in.readLine();
+            newListObjects.append(tempItem);
+            classDataIndex.push_back({count,tempItem.toUtf8().constData()});
+            count++;
         }
         file.close();
 
@@ -1006,16 +1014,39 @@ std::string* quickSort(std::string array[],int pivot, int low){
     return array;
 }
 
+int binarySearch(std::string searchList[],std::string item) {
+    int pos = -1;
+    int count = 0;
+    int low = 0;
+    int mid;
+    int high = searchList->size();
+    std::string searched;
+    while ((count<searchList->size()) && item != searched) {
+        mid = high+low / 2;
+        if (searchList[mid] < item) {
+            low = mid;
+        }
+        else if (searchList[mid] > item) {
+            high = mid;
+        }
+        else if (searchList[mid] == item) {
+            pos = mid;
+            break;
+        }
+        count++;
+    }
+    return pos;
+}
+
 void MainWindow::on_btn_SortList_clicked() //Sorts the classes into alphabetical order.
 {
     int itemCount = ui->listWidget->count();
     if (itemCount > 1) {
         QStringList sortedItemList;
         std::string items[itemCount];
-        //QString temp;
         std::string temp;
         for (int i = 0; i< ui->listWidget->count(); i++) {
-            temp = ui->listWidget->item(i)->text().toLocal8Bit().constData();;
+            temp = ui->listWidget->item(i)->text().toLocal8Bit().constData();
             items[i] = temp;
         }
        std:: string* sortedItems= quickSort(items,itemCount-1,0);
@@ -1035,4 +1066,27 @@ void MainWindow::on_btn_SortList_clicked() //Sorts the classes into alphabetical
 void MainWindow::onSaveCalled(){
     saveAnnotations();
     qDebug() << "Saved";
+}
+
+
+
+
+void MainWindow::on_btn_SearchList_clicked()
+{
+    int itemCount = ui->listWidget->count();
+    if (itemCount > 1) {
+        std::string items[itemCount];
+        std:: string* sortedItems= quickSort(items,itemCount-1,0);
+        QString classSearch = QInputDialog::getText(this, tr("What Item do you want to search for?"), tr("Class name: "), QLineEdit::Normal);
+        std::string temp = classSearch.toUtf8().constData();
+        if (temp != "") {
+            int pos = binarySearch(sortedItems,temp);
+            if (pos == -1) {
+                std::cout<<"Item Not Found"<<std::endl;
+            }
+            else {
+                ui->listWidget->setCurrentRow(pos);
+            }
+        }
+    }
 }

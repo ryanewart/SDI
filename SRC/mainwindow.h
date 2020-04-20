@@ -38,6 +38,7 @@ public:
     };
 
 
+
     std::vector<int> allCoords;
 
     int clicks = 0;
@@ -140,6 +141,8 @@ private slots:
     void saveAnnotations();
 
     QPolygon loadShapes(QStringList data, int count, int size);
+
+    void on_btn_SearchList_clicked();
 
 private:
 
