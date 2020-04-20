@@ -835,18 +835,15 @@ void MainWindow::on_actionOpen_triggered()
                     }
                 }
             }
-<<<<<<< HEAD
 
         loadFile.close();
         path = File;
         reloadImage(path);
         imageFound = true;
-=======
             loadFile.close();
             path = File;
             reloadImage(path);
             imageFound = true;
->>>>>>> 40008a9048901db9bba44f99655f5a5abc63279e
         }
 
     }
@@ -913,24 +910,25 @@ void MainWindow::on_btn_AddClass_clicked()
         renamedClass = renamedClass.trimmed();
         classFilePath = QDir::homePath() + "/" + renamedClass + ".names";
     }
+    if(classFilePath !=""){
+        //Ask the user for a class
+        QString newClass = QInputDialog::getText(this, tr("Input a New Class"), tr("New Class:"), QLineEdit::Normal);
+        //Append to the listWidget
+        ui->listWidget->addItem(newClass);
+        //Append to the class file (How to parse the path)
+        if (classFilePath != ""){
+            QFile file(classFilePath);
+            file.open(QIODevice::Append);
 
-    //Ask the user for a class
-    QString newClass = QInputDialog::getText(this, tr("Input a New Class"), tr("New Class:"), QLineEdit::Normal);
-    //Append to the listWidget
-    ui->listWidget->addItem(newClass);
-    //Append to the class file (How to parse the path)
-    if (classFilePath != ""){
-        QFile file(classFilePath);
-        file.open(QIODevice::Append);
+            if (!file.isOpen()){
+                QMessageBox::information(this, "error", file.errorString());
+            }
 
-        if (!file.isOpen()){
-            QMessageBox::information(this, "error", file.errorString());
+            QTextStream outputStream(&file);
+
+            outputStream << newClass << "\n";
+            file.close();
         }
-
-        QTextStream outputStream(&file);
-
-        outputStream << newClass << "\n";
-        file.close();
     }
 }
 
@@ -972,9 +970,11 @@ void MainWindow::on_btn_ModifyClass_clicked() //Modifiys the name of the selecte
 
     //Pop up box to get the new name
     QString renamedClass = QInputDialog::getText(this, tr("Input the modified name"), tr("New Class Name:"), QLineEdit::Normal);
-    selectedItem[0]->setText(renamedClass);
-    //UpdateFile
-    updateFile();
+    if (renamedClass != "") {
+        selectedItem[0]->setText(renamedClass);
+        //UpdateFile
+        updateFile();
+    }
 }
 
 bool sorted(std::string array[],int high) {
@@ -1053,8 +1053,7 @@ void MainWindow::on_btn_SortList_clicked() //Sorts the classes into alphabetical
         std::string items[itemCount];
         std::string temp;
         for (int i = 0; i< ui->listWidget->count(); i++) {
-            temp = ui->listWidget->item(i)->text().toLocal8Bit().constData();
-            items[i] = temp;
+            items[i] = ui->listWidget->item(i)->text().toLocal8Bit().constData();
         }
        std:: string* sortedItems= quickSort(items,itemCount-1,0);
        for (int i = 0; i< itemCount; i++) {
