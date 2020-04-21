@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QPolygon>
 #include <QInputDialog>
+#include <QMap>
 #include <QTextStream>
 #include <QStandardPaths>
 
@@ -883,6 +884,8 @@ void MainWindow::on_btn_OpenClass_clicked()
     classFilePath = QFileDialog::getOpenFileName(this, tr("Open file"), "/", tr("Name Files (*.names)"));
     QString tempItem;
     QStringList newListObjects;
+    QMap<QString, int> classIndexMap;
+
     try {
 
         QFile file(classFilePath);
@@ -894,7 +897,8 @@ void MainWindow::on_btn_OpenClass_clicked()
         while(!in.atEnd()) {
             tempItem = in.readLine();
             newListObjects.append(tempItem);
-            classDataIndex.push_back({count,tempItem.toUtf8().constData()});
+            classDataIndex.push_back({count,tempItem.toUtf8().constData()}); //Comment this out when dictionary is implemented.
+            classIndexMap[tempItem] = count;
             count++;
         }
         file.close();
