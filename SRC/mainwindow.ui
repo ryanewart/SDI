@@ -179,11 +179,8 @@
      <item>
       <widget class="QPushButton" name="btn_SearchList">
        <property name="text">
-<<<<<<< HEAD
         <string>Search List</string>
-=======
         <string>Search</string>
->>>>>>> a35913e9347331eeaff01daf5946c07950b5fed9
        </property>
       </widget>
      </item>

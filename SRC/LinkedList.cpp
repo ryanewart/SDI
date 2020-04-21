@@ -53,7 +53,7 @@ void List:: displayList() {
 }
 */
 
-void List:: addNode(coords input) {
+void List:: push_back(coords input) {
     node* OldHead = new node;
     OldHead = head;
     node Test = *OldHead;
@@ -96,6 +96,19 @@ coords List:: popTail() {
     return value;
 }
 
+coords List:: At(int pos) {
+    node* firstNode = new node;
+    firstNode = head;
+    coords item;
+    node Test = *firstNode;
+    for (int i = 0; i<pos; i++) {
+        firstNode = Test.previous;
+        Test = *firstNode;
+    }
+    item = Test.values;
+    return item;
+}
+
 coords List :: getTail() {
     node* NodeTail = new node;
     NodeTail= tail;
@@ -116,3 +129,38 @@ int List:: size() {
     }
     return count;
 }
+
+void List:: set(int pos, coords data){
+    node* firstNode = new node;
+    firstNode = head;
+    coords item;
+    node Test = *firstNode;
+    for (int i = 0; i<pos; i++) {
+        std::cout<<i<<std::endl;
+        firstNode = Test.previous;
+        Test = *firstNode;
+    }
+    firstNode->values = data;
+}
+
+coords* List:: copy(int size) {
+    coords valueArray[size];
+    int count = 0;
+    node* firstNode = new node;
+    firstNode = head;
+    node Test = *firstNode;
+    while(Test.previous != NULL) {
+        count++;
+        firstNode = Test.previous;
+        Test = *firstNode;
+        valueArray[count] = Test.values;
+    }
+    return valueArray;
+}
+
+void List:: clear() {
+    head->previous =nullptr;
+    tail->values = {NULL,NULL};
+
+}
+

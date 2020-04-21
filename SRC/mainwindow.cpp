@@ -19,7 +19,6 @@ struct classData {
     int position;
     std::string data;
 };
-
 int classIndex[100][1];
 int prevX;
 bool imageFound = false;
@@ -32,6 +31,9 @@ std::string editingType;
 std:: vector<coords> tempShape;
 QString path;
 std:: vector<classData> classDataIndex;
+std:: vector<QPolygon> Polygons;
+coords polygonArray[8];
+List PolyPoints = List({NULL,NULL});
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -65,8 +67,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-QPolygon MainWindow::assignShape(coords Shape[],int size) {
+QPolygon assignPolygon(coords Shape[], int size) {
     QPolygon polyLines;
     for (int i = 0; i<size;i++) {
         polyLines << QPoint(Shape[i].x,Shape[i].y);
@@ -141,14 +142,14 @@ void MainWindow::paintEvent(QPaintEvent *event)
         if (type == 3) { //polygon
 
             if (PolyPoints.size() > 2) {
-                int xDiff = PolyPoints[PolyPoints.size()-1].x -PolyPoints[0].x;
-                int yDiff = PolyPoints[PolyPoints.size()-1].y -PolyPoints[0].y;
+                int xDiff = PolyPoints.At(PolyPoints.size()-1).x -PolyPoints.At(0).x;
+                int yDiff = PolyPoints.At(PolyPoints.size()-1).y -PolyPoints.At(0).y;
                 if (((xDiff < 5 && xDiff >-5) && (yDiff < 5 && yDiff >-5)) && (PolyPoints.size()>2)) {
-                    //PolyPoints[PolyPoints.size()-1] = PolyPoints[0];
-                    coords polygonArray[PolyPoints.size()];
-                    std::copy(PolyPoints.begin(), PolyPoints.end(), polygonArray);
+                    for (int i = 0; i<PolyPoints.size();i++) {
+                        polygonArray[i] = PolyPoints.At(i);
+                    }
                     type = 0;
-                    Polygons.push_back(assignShape(polygonArray,PolyPoints.size()-1));
+                    Polygons.push_back(assignPolygon(polygonArray,PolyPoints.size()-1));
                     classIndex[type][Polygons.size()-1] =  ui->listWidget->currentRow();
                     PolyPoints.clear();
 
@@ -174,7 +175,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
         if (PolyPoints.size() > 0) {
             for (int j = 1; j < (PolyPoints.size()); j++) {
-                painter.drawLine(PolyPoints[j-1].x, PolyPoints[j-1].y, PolyPoints[j].x, PolyPoints[j].y);
+                painter.drawLine(PolyPoints.At(j-1).x, PolyPoints.At(j-1).y, PolyPoints.At(j).x, PolyPoints.At(j).y);
             }
         }
 
@@ -200,6 +201,14 @@ void MainWindow::paintEvent(QPaintEvent *event)
     }
 }
 
+
+QPolygon MainWindow::assignShape(coords Shape[],int size) {
+    QPolygon polyLines;
+    for (int i = 0; i<size;i++) {
+        polyLines << QPoint(Shape[i].x,Shape[i].y);
+    }
+    return polyLines;
+}
 
 coords& addCoordData(coords Shape[], int Size,  int x, int y, int addition = 0) {
     Shape[1] = {x,y};
@@ -235,7 +244,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
         }
 
         if (type ==3) {
-            PolyPoints[PolyPoints.size()-1] = {coords.x(),coords.y()};
+            PolyPoints.set(0,{coords.x(),coords.y()}); //REVIEW
         }
     }
         if (type == 0) {
@@ -579,8 +588,14 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     //Polygon
     if  (type == 3) {
         QMessageBox PolyBox;
-        clicks = clicks+1;
-        PolyPoints.push_back({coords.x(),coords.y()});
+        if (clicks  == 1) {
+            PolyPoints.set(0,{coords.x(),coords.y()});
+            clicks = clicks+1;
+        }
+        else {
+            PolyPoints.push_back({coords.x(),coords.y()});
+            clicks = clicks+1;
+        }
         if (clicks > 8 ) {
             PolyBox.setText("This shape can only have a maximum of 8 points");
             PolyBox.exec();
@@ -650,7 +665,6 @@ void MainWindow::clearShapes(){
     Triangles.clear();
     Squares.clear();
     Trapeziums.clear();
-    PolyPoints.clear();
     Polygons.clear();
 }
 
@@ -835,21 +849,14 @@ void MainWindow::on_actionOpen_triggered()
                     }
                 }
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> a35913e9347331eeaff01daf5946c07950b5fed9
         loadFile.close();
         path = File;
         reloadImage(path);
         imageFound = true;
-<<<<<<< HEAD
             loadFile.close();
             path = File;
             reloadImage(path);
             imageFound = true;
-=======
->>>>>>> a35913e9347331eeaff01daf5946c07950b5fed9
         }
 
     }
@@ -1109,6 +1116,7 @@ void MainWindow::on_btn_SearchList_clicked()
     }
 }
 
+
 void MainWindow::on_btn_SortList_3_clicked()
 {
     int itemCount = ui->listWidget->count();
@@ -1131,3 +1139,5 @@ void MainWindow::on_btn_SortList_3_clicked()
         QMessageBox::information(this, "error", tr("No classes to sort"));
     }
 }
+
+

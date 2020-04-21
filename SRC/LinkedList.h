@@ -15,19 +15,23 @@ struct node {
 
 class List {
 private:
-    node * head;
     node * tail;
 public:
+    void set(int pos, coords data);
     coords popTail();
     List(coords input);
     node CreateNode(coords input, node * prev);
-    void addNode(coords input);
+    void push_back(coords input);
     coords getHead();
     coords getTail();
     coords popHead();
     void displayList();
     bool searchList(coords input);
     int size();
+    coords At(int pos);
+    coords* copy(int size);
+    node * head;    
+    void clear();
 
 };
 

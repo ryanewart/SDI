@@ -65,9 +65,6 @@ public:
 
     coords trap[4];
 
-    std::vector<coords> PolyPoints;
-
-    std:: vector<QPolygon> Polygons;
 
 public slots:
     void onSaveCalled();
