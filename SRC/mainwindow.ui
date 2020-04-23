@@ -17,85 +17,71 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>1130</x>
+      <x>1110</x>
       <y>0</y>
       <width>120</width>
-      <height>411</height>
+      <height>611</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
     </property>
     <property name="title">
      <string>Tools</string>
     </property>
-    <widget class="QPushButton" name="pushButton">
+    <property name="alignment">
+     <set>Qt::AlignHCenter|Qt::AlignTop</set>
+    </property>
+    <widget class="QSplitter" name="splitter">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>100</width>
-       <height>60</height>
+       <x>4</x>
+       <y>30</y>
+       <width>111</width>
+       <height>571</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Triangle</string>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
      </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>100</y>
-       <width>100</width>
-       <height>60</height>
-      </rect>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-     <property name="text">
-      <string>Square</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>180</y>
-       <width>100</width>
-       <height>60</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string notr="true">Trapesium</string>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>12</width>
-       <height>12</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_4">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>260</y>
-       <width>100</width>
-       <height>60</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Polygon</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_5">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>340</y>
-       <width>100</width>
-       <height>60</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Clear</string>
-     </property>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Triangle</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="text">
+       <string>Square</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string notr="true">Trapesium</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>12</width>
+        <height>12</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="text">
+       <string>Polygon</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="text">
+       <string>Clear</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QTreeView" name="treeView">
@@ -114,8 +100,14 @@
       <x>50</x>
       <y>20</y>
       <width>1021</width>
-      <height>601</height>
+      <height>561</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-style: solid;
+border-width: 2px;
+border-color: red;
+border-radius: 2px;</string>
     </property>
     <property name="text">
      <string>TextLabel</string>
@@ -131,13 +123,53 @@
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>600</y>
+      <width>321</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Image Selector</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
       <x>680</x>
-      <y>640</y>
-      <width>571</width>
-      <height>32</height>
+      <y>600</y>
+      <width>211</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Class Selector</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>610</y>
+      <width>581</width>
+      <height>78</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -163,11 +195,22 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_SortList">
-       <property name="text">
-        <string>Sort ASC</string>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="btn_SortList_3">
+         <property name="text">
+          <string>Sort DESC</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_SortList">
+         <property name="text">
+          <string>Sort ASC</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QPushButton" name="btn_ModifyClass">
@@ -185,25 +228,14 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="btn_SortList_3">
-    <property name="geometry">
-     <rect>
-      <x>964</x>
-      <y>610</y>
-      <width>98</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Sort DESC</string>
-    </property>
-   </widget>
    <zorder>layoutWidget</zorder>
    <zorder>labelMainPic</zorder>
    <zorder>groupBox</zorder>
    <zorder>treeView</zorder>
    <zorder>listWidget</zorder>
    <zorder>btn_SortList_3</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
