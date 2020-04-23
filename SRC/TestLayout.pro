@@ -43,6 +43,8 @@ INCLUDEPATH += "/usr/local/Cellar/boost/1.72.0/include"
 LIBS += -L"/usr/local/Cellar/boost/1.72.0/lib"
 }
 
+
+ICON = Icon.icns
 LIBS += -lboost_unit_test_framework
 
 
