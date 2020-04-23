@@ -222,6 +222,7 @@ border-radius: 2px;</string>
      <item>
       <widget class="QPushButton" name="btn_SearchList">
        <property name="text">
+        <string>Search List</string>
         <string>Search</string>
        </property>
       </widget>
@@ -253,7 +254,6 @@ border-radius: 2px;</string>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_As"/>
-    <addaction name="actionRename"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -281,11 +281,6 @@ border-radius: 2px;</string>
   <action name="actionTest">
    <property name="text">
     <string>Test</string>
-   </property>
-  </action>
-  <action name="actionRename">
-   <property name="text">
-    <string>Rename</string>
    </property>
   </action>
  </widget>
