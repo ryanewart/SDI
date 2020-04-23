@@ -477,18 +477,15 @@ QPolygon MainWindow::resizeShape(QPolygon Shape,double diff){
     }
     centX = centX/Shape.size();
     centY = centY/Shape.size();
-    //QPoint origin = Shape[1];
 
     for (int side = 0; side<Shape.size(); side++){
         diffX = centX - Shape[side].x();
         diffY = centY - Shape[side].y();
-        //std::cout<<diffX<<", "<<diffY<<std::endl;
         diffX = diffX*(1+diff);
         diffY = diffY*(1+diff);
         Shape[side] = {centX + diffX,centY+diffY};
 
     }
-    //Shape[1] = origin;
 
     return Shape;
 }
@@ -516,7 +513,7 @@ void MainWindow::ShowContextMenu(const QPoint &pos) // this is a slot
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     QPoint coords = QCursor::pos();
-    //mapFromParent(QCursor::pos());
+    mapFromParent(QCursor::pos());
     if (drawing == true) {
         drawing = false;
         annotationLabel->hide();
@@ -724,10 +721,7 @@ void MainWindow::saveAnnotations() {
                         }
                     }
                      outputStream << "\n";
-                }
-                outputStream << "\n";
-                outputStream << classFilePath;
-                outputStream << "\n";
+                }     
                 file.close();
 
 }
@@ -763,6 +757,23 @@ void MainWindow::on_actionSave_As_triggered() {
     }
     else {
 
+    }
+}
+
+void MainWindow::on_actionRename_triggered() {
+    QString oldname = QInputDialog::getText(this, tr("Rename file"), tr("Old file name: "), QLineEdit::Normal);
+    QString testFilePath = QFileDialog::getOpenFileName(this, tr("Open file"), "/", tr("Name Files (*.txt)"));
+    oldname = oldname.trimmed();
+    QString renameFilePath = QDir::homePath() + "/" + oldname;
+    QString newname = QInputDialog::getText(this, tr("Rename file"), tr("New file name: "), QLineEdit::Normal);
+    QDir dir(renameFilePath);
+    bool renameCheck = dir.rename(oldname, newname);
+    if (renameCheck == true){
+        QMessageBox::warning(this,"Error","Saved successfully", QMessageBox::Ok);
+        close();
+    }
+    else {
+        QMessageBox::warning(this,"Error","Rename unsuccessful! Please try again.", QMessageBox::Ok);
     }
 }
 
@@ -1038,30 +1049,6 @@ std::string* quickSort(std::string array[],int pivot, int low){
     return array;
 }
 
-int binarySearch(std::string searchList[],std::string item) {
-    int pos = -1;
-    int count = 0;
-    int low = 0;
-    int mid;
-    int high = searchList->size();
-    std::string searched;
-    while ((count<searchList->size()) && item != searched) {
-        mid = high+low / 2;
-        if (searchList[mid] < item) {
-            low = mid;
-        }
-        else if (searchList[mid] > item) {
-            high = mid;
-        }
-        else if (searchList[mid] == item) {
-            pos = mid;
-            break;
-        }
-        count++;
-    }
-    return pos;
-}
-
 void MainWindow::on_btn_SortList_clicked() //Sorts the classes into alphabetical order.
 {
     int itemCount = ui->listWidget->count();
@@ -1091,21 +1078,48 @@ void MainWindow::onSaveCalled(){
     qDebug() << "Saved";
 }
 
-
+int binarySearch(std::string searchList[],std::string item) {
+    int pos = -1;
+    int count = 0;
+    int low = 0;
+    int mid;
+    int high = searchList->size();
+    std::string searched;
+    std::cout<<searchList[0]<<std::endl;
+    while ((count<searchList->size()) && item != searched) {
+        mid = (high+low) / 2;
+        std::cout<<mid<<std::endl;
+        if (searchList[mid] < item) {
+            low = mid;
+        }
+        else if (searchList[mid] > item) {
+            high = mid;
+        }
+        else if (searchList[mid] == item) {
+            pos = mid;
+            break;
+        }
+        count++;
+    }
+    return pos;
+}
 
 
 void MainWindow::on_btn_SearchList_clicked()
 {
-    qDebug() << "Reached";
     int itemCount = ui->listWidget->count();
     std::string temp;
     if (itemCount > 1) {
+        int dict[itemCount];
         std::string items[itemCount];
         for (int i = 0; i< ui->listWidget->count(); i++) {
             temp = ui->listWidget->item(i)->text().toLocal8Bit().constData();
             items[i] = temp;
         }
         std::string * sortedItems = quickSort(items, itemCount-1, 0);
+        for (int i = 0; i< items->size();i++) {
+
+        }
         QString classSearch = QInputDialog::getText(this, tr("What Item do you want to search for?"), tr("Class name: "), QLineEdit::Normal);
         std::string temp = classSearch.toStdString();
         if (temp != "") {
@@ -1124,7 +1138,7 @@ void MainWindow::on_btn_SearchList_clicked()
 void MainWindow::on_btn_SortList_3_clicked()
 {
     int itemCount = ui->listWidget->count();
-    if (itemCount > 1) {
+    if (itemCount > 1) {     
         QStringList sortedItemList;
         std::string items[itemCount];
         std::string temp;
