@@ -761,11 +761,13 @@ void MainWindow::on_actionSave_As_triggered() {
 }
 
 void MainWindow::on_actionRename_triggered() {
+    QString oldname = QInputDialog::getText(this, tr("Rename file"), tr("Old file name: "), QLineEdit::Normal);
     QString testFilePath = QFileDialog::getOpenFileName(this, tr("Open file"), "/", tr("Name Files (*.txt)"));
-    QString renameFilePath = QDir::homePath();
+    oldname = oldname.trimmed();
+    QString renameFilePath = QDir::homePath() + "/" + oldname;
     QString newname = QInputDialog::getText(this, tr("Rename file"), tr("New file name: "), QLineEdit::Normal);
     QDir dir(renameFilePath);
-    bool renameCheck = dir.rename(annotationFilePath, newname);
+    bool renameCheck = dir.rename(oldname, newname);
     if (renameCheck == true){
         QMessageBox::warning(this,"Error","Saved successfully", QMessageBox::Ok);
         close();
