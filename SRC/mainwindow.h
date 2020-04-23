@@ -134,6 +134,8 @@ private slots:
 
     void on_actionSave_As_triggered();
 
+    void on_actionRename_triggered();
+
     void clearShapes();
 
     void saveAnnotations();

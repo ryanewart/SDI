@@ -253,6 +253,7 @@ border-radius: 2px;</string>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_As"/>
+    <addaction name="actionRename"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -280,6 +281,11 @@ border-radius: 2px;</string>
   <action name="actionTest">
    <property name="text">
     <string>Test</string>
+   </property>
+  </action>
+  <action name="actionRename">
+   <property name="text">
+    <string>Rename</string>
    </property>
   </action>
  </widget>
