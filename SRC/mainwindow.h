@@ -9,6 +9,7 @@
 #include<vector>
 #include <algorithm>
 #include <QGraphicsScene>
+#include <QMap>
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include<list>
@@ -152,7 +153,7 @@ private:
     QString annotationFilePath;
 
     saveThread * autoSaveThread;
-
+    QMap<QString, int> classIndexMap;
 
     void updateFile();
     void addClassToLW();
