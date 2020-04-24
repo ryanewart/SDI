@@ -163,7 +163,7 @@ border-radius: 2px;</string>
      <string>Class Selector</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>680</x>
@@ -222,7 +222,6 @@ border-radius: 2px;</string>
      <item>
       <widget class="QPushButton" name="btn_SearchList">
        <property name="text">
-        <string>Search List</string>
         <string>Search</string>
        </property>
       </widget>
@@ -234,7 +233,6 @@ border-radius: 2px;</string>
    <zorder>groupBox</zorder>
    <zorder>treeView</zorder>
    <zorder>listWidget</zorder>
-   <zorder>btn_SortList_3</zorder>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
   </widget>
@@ -254,6 +252,7 @@ border-radius: 2px;</string>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_As"/>
+    <addaction name="actionRename"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -281,6 +280,14 @@ border-radius: 2px;</string>
   <action name="actionTest">
    <property name="text">
     <string>Test</string>
+   </property>
+  </action>
+  <action name="actionRename">
+   <property name="text">
+    <string>Rename</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
    </property>
   </action>
  </widget>

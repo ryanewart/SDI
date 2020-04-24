@@ -86,7 +86,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
         QPainter painter(&tmp);
 
 
-        painter.setBrush(Qt::DiagCrossPattern);
+        //painter.setBrush(Qt::DiagCrossPattern);
 
 
         QPen pen;
@@ -523,8 +523,21 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
 
     }
     if (resizing == true) {
-        //resizing = false;
-        //annotationLabel->hide();
+        if (clicks == 2) {
+            resizing = false;
+            annotationLabel->hide();
+            clicks = 0;
+        }
+         clicks = 2;
+    }
+
+    if (moving == true) {
+        if (clicks == 2) {
+            moving = false;
+            annotationLabel->hide();
+            clicks = 0;
+        }
+        clicks = 2;
     }
 
     if (type == 0) {
@@ -709,7 +722,6 @@ void MainWindow::saveAnnotations() {
             outputStream << "," << path;
         }
                 //New line in file
-                outputStream << noOfAnnotations;
                 outputStream << "\n";
 
                 for (int j=0; j < 4; j++){
@@ -777,6 +789,23 @@ QPolygon MainWindow::loadShapes(QStringList data, int count, int size) {
     return polygonShape;
 }
 
+void MainWindow::on_actionRename_triggered() {
+        QString oldname = annotationFilePath;
+        oldname = oldname.trimmed();
+        QFile file(annotationFilePath);
+        qDebug() <<oldname;
+        QString newname = QDir::homePath() + "/" +QInputDialog::getText(this, tr("Rename file"), tr("New file name: "), QLineEdit::Normal)+".annotations";
+        bool renameCheck = file.rename(oldname,newname);
+        if (renameCheck == true){
+            QMessageBox::warning(this,"Error","Saved successfully", QMessageBox::Ok);
+                    file.close();
+        }
+        else {
+            QMessageBox::warning(this,"Error","Rename unsuccessful! Please try again.", QMessageBox::Ok);
+        }
+    }
+
+
 void MainWindow::on_actionOpen_triggered()
 {
     try {
@@ -813,7 +842,6 @@ void MainWindow::on_actionOpen_triggered()
                 File = data.at(i);
                 filepathList.insert(i, File);
             }
-            QString shapeNo = in.readLine();
             while (!in.atEnd()) {
                 int count = 1;
                 line = in.readLine();
@@ -919,6 +947,8 @@ void MainWindow::on_btn_OpenClass_clicked()
 
 
 }
+
+
 
 void MainWindow::on_btn_AddClass_clicked()
 {
@@ -1046,7 +1076,8 @@ int binarySearch(std::string searchList[],std::string item) {
     int high = searchList->size();
     std::string searched;
     while ((count<searchList->size()) && item != searched) {
-        mid = high+low / 2;
+        mid = (high+low) / 2;
+        std::cout<<mid<<std::endl;
         if (searchList[mid] < item) {
             low = mid;
         }
@@ -1110,6 +1141,7 @@ void MainWindow::on_btn_SearchList_clicked()
         std::string temp = classSearch.toStdString();
         if (temp != "") {
             int pos = binarySearch(sortedItems,temp);
+            std::cout<<pos<<std::endl;
             if (pos == -1) {
                 std::cout<<"Item Not Found"<<std::endl;
             }

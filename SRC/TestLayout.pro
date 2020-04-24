@@ -45,6 +45,8 @@ LIBS += -L"/usr/local/Cellar/boost/1.72.0/lib"
 
 LIBS += -lboost_unit_test_framework
 
+UI_DIR = $$PWD
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
