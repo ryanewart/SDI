@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         ../SRC/BinarySearch.cpp \
         ../SRC/LinkedList.cpp \
+        ../SRC/QuickSort.cpp \
         ../TESTS/project-tests.cpp
 
 # Default rules for deployment.

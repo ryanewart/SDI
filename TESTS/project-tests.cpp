@@ -2,7 +2,7 @@
 #include <boost/test/included/unit_test.hpp>
 #include "../SRC/LinkedList.h"
 #include "../SRC/BinarySearch.cpp"
-
+#include "../SRC/QuickSort.cpp"
 
 BOOST_AUTO_TEST_SUITE( Total_time )
 //UNIT TESTS FOR LINKED LIST
@@ -134,19 +134,20 @@ BOOST_AUTO_TEST_CASE( Search_Test_Missing_Item )
 
 //}
 //QUICK SORT TEST
-//BOOST_AUTO_TEST_CASE( Quick_Sort )
-//{
-//    std::string j[6] = { "2","3","8","13","15","48" };
-//    std::string testItems[6] = { "2","3","15","8","48","13" };
-//   `int testItemCount = 6;
-//    std::string items[testItemCount];
-//    for (int i = 0; i < testItemCount ; i++) {
-//        temp = testItems[i];
-//        items[i] = temp;
-//    }
-//    std::string* sortedItems = quickSort(items,testItemCount,0);
-//    BOOST_CHECK_EQUAL(sortedItems,j)
-//}
+
+BOOST_AUTO_TEST_CASE( Quick_Sort )
+{
+    std::string j[6] = { "2","3","8","13","15","48" };
+    std::string testItems[6] = { "2","3","15","8","48","13" };
+    int testItemCount = 6;
+    std::string items[testItemCount];
+    for (int i = 0; i < testItemCount ; i++) {
+        std::string temp = testItems[i];
+        items[i] = temp;
+    }
+    std::string * sortedItems = quickSort(items,testItemCount,0);
+    BOOST_CHECK_EQUAL(sortedItems,j);
+}
 ////SEARCH ALGORITHM TESTS
 BOOST_AUTO_TEST_CASE( Binary_Search_Found )
 {

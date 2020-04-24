@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     BinarySearch.cpp \
     LinkedList.cpp \
+    QuickSort.cpp \
     annotation.cpp \
     itemclass.cpp \
     main.cpp \
