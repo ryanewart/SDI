@@ -1,8 +1,6 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
-#include "mainwindow.h"
-
 struct coords {
     int x,y;
 };

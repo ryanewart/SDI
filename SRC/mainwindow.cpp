@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "mythread.h"
+#include "BinarySearch.cpp"
 #include <QPixmap>
 #include <iostream>
 #include <list>
@@ -1066,31 +1067,6 @@ std::string* quickSort(std::string array[],int pivot, int low){
             quickSort(array, pivot, l+1);
         }
     return array;
-}
-
-int binarySearch(std::string searchList[],std::string item) {
-    int pos = -1;
-    int count = 0;
-    int low = 0;
-    int mid;
-    int high = searchList->size();
-    std::string searched;
-    while ((count<searchList->size()) && item != searched) {
-        mid = (high+low) / 2;
-        std::cout<<mid<<std::endl;
-        if (searchList[mid] < item) {
-            low = mid;
-        }
-        else if (searchList[mid] > item) {
-            high = mid;
-        }
-        else if (searchList[mid] == item) {
-            pos = mid;
-            break;
-        }
-        count++;
-    }
-    return pos;
 }
 
 void MainWindow::on_btn_SortList_clicked() //Sorts the classes into alphabetical order.
