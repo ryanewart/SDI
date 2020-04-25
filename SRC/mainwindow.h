@@ -148,6 +148,10 @@ private slots:
 
     void closeEvent (QCloseEvent *event);
 
+    void on_actionUndo_2_triggered();
+
+    void on_actionRedo_Last_Action_triggered();
+
 private:
 
     Ui::MainWindow *ui;

@@ -22,6 +22,9 @@ struct classData {
     int position;
     std::string data;
 };
+
+int redoData;
+QPolygon redoShape;
 int classIndex[100][1];
 int prevX;
 bool imageFound = false;
@@ -37,6 +40,8 @@ std:: vector<classData> classDataIndex;
 std:: vector<QPolygon> Polygons;
 coords polygonArray[9];
 List PolyPoints = List({NULL,NULL});
+List undoList = List({NULL,NULL});
+coords position;
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -63,6 +68,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     autoSaveThread = new saveThread();
     connect(autoSaveThread, SIGNAL(callSave()), this, SLOT(onSaveCalled()));
+    ui->actionRedo_Last_Action->setEnabled(false);
+
 }
 
 MainWindow::~MainWindow()
@@ -112,6 +119,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
                 Squares.push_back(squareLines);
                 classIndex[type][Squares.size()-1] =  ui->listWidget->currentRow();
                 squareLines.clear();
+                int pos = Squares.size()-1;
+                undoList.push_back({type,pos});
                 clicks = 5;
                 type = 0;
             }
@@ -131,6 +140,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
                 Triangles.push_back(triangleLines);
                 classIndex[type][Triangles.size()-1] =  ui->listWidget->currentRow();
                 triangleLines.clear();
+                int pos = Triangles.size()-1;
+                undoList.push_back({type,pos});
                 clicks = 5;
                 type = 0;
             }
@@ -151,11 +162,13 @@ void MainWindow::paintEvent(QPaintEvent *event)
                     for (int i = 0; i<PolyPoints.size();i++) {
                         polygonArray[i] = PolyPoints.At(i);
                     }
-                    type = 0;
+
                     Polygons.push_back(assignPolygon(polygonArray,PolyPoints.size()-1));
+                    int pos = Polygons.size()-1;
+                    undoList.push_back({type,pos});
                     classIndex[type][Polygons.size()-1] =  ui->listWidget->currentRow();
                     PolyPoints.clear();
-
+                    type = 0;
             }
         }           
         }
@@ -167,6 +180,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
                 Trapeziums.push_back(trapLines);
                  classIndex[type][Trapeziums.size()-1] =  ui->listWidget->currentRow();
                 trapLines.clear();
+                int pos = Trapeziums.size()-1;
+                undoList.push_back({type,pos});
                 clicks = 5;
                 type = 0;
             }
@@ -812,6 +827,57 @@ void MainWindow::on_actionRename_triggered() {
         }
     }
 
+void MainWindow::on_actionUndo_2_triggered() {
+    if (undoList.size() > 1) {
+        std::cout<<"Reached"<<std::endl;
+        position = undoList.popHead();
+        std::cout<<position.x<<", "<<position.y<<std::endl;
+        switch(position.x) {
+            case 1 :
+                redoShape =  Squares[position.y];
+                Squares[position.y].clear();
+                break;
+            case 2 :
+                redoShape =  Triangles[position.y];
+                Triangles[position.y].clear();
+                break;
+            case 3 :
+                redoShape =  Polygons[position.y];
+                Polygons[position.y].clear();
+                break;
+            case 4 :
+                redoShape =  Trapeziums[position.y];
+                Trapeziums[position.y].clear();
+                break;
+        }
+        redoData = position.x;
+        ui->actionRedo_Last_Action->setEnabled(true);
+    }
+}
+
+void MainWindow::on_actionRedo_Last_Action_triggered() {
+    int pos = 0;
+     switch(redoData) {
+        case 1 :
+            Squares.push_back(redoShape);
+            pos = Squares.size()-1;
+            break;
+        case 2 :
+            Triangles.push_back(redoShape);
+            pos = Triangles.size()-1;
+            break;
+        case 3 :
+            Polygons.push_back(redoShape);
+            pos = Polygons.size()-1;
+            break;
+        case 4 :
+            Trapeziums.push_back(redoShape);
+            pos = Trapeziums.size()-1;
+            break;
+     }
+     undoList.push_back({redoData,pos});
+     ui->actionRedo_Last_Action->setEnabled(false);
+}
 
 void MainWindow::on_actionOpen_triggered()
 {
@@ -1126,10 +1192,13 @@ void MainWindow::closeEvent (QCloseEvent *event)
     if (annotationFilePath != "") {
         QMessageBox::StandardButton saveBtn = QMessageBox::question( this, "error",
                                                                     tr("Would you like to save before Exit?\n"),
-                                                                    QMessageBox::No | QMessageBox::Yes,
-                                                                    QMessageBox::Yes);
-        if (saveBtn != QMessageBox::Yes) {
+                                                                    QMessageBox::No | QMessageBox::Yes
+                                                                    );
+        if (saveBtn == QMessageBox::Yes) {
             saveAnnotations();
+        }
+        if (saveBtn == QMessageBox::No) {
+
         }
     }
 }

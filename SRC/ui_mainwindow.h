@@ -38,6 +38,9 @@ public:
     QAction *actionSave_As;
     QAction *actionTest;
     QAction *actionRename;
+    QAction *actionUndo;
+    QAction *actionUndo_2;
+    QAction *actionRedo_Last_Action;
     QWidget *centralwidget;
     QGroupBox *groupBox;
     QSplitter *splitter;
@@ -63,6 +66,7 @@ public:
     QPushButton *btn_SearchList;
     QMenuBar *menubar;
     QMenu *menuFile;
+    QMenu *menuEdit;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -83,6 +87,12 @@ public:
         actionRename = new QAction(MainWindow);
         actionRename->setObjectName(QString::fromUtf8("actionRename"));
         actionRename->setVisible(true);
+        actionUndo = new QAction(MainWindow);
+        actionUndo->setObjectName(QString::fromUtf8("actionUndo"));
+        actionUndo_2 = new QAction(MainWindow);
+        actionUndo_2->setObjectName(QString::fromUtf8("actionUndo_2"));
+        actionRedo_Last_Action = new QAction(MainWindow);
+        actionRedo_Last_Action->setObjectName(QString::fromUtf8("actionRedo_Last_Action"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         groupBox = new QGroupBox(centralwidget);
@@ -200,16 +210,21 @@ public:
         menubar->setGeometry(QRect(0, 0, 1260, 22));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
+        menuEdit = new QMenu(menubar);
+        menuEdit->setObjectName(QString::fromUtf8("menuEdit"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
 
         menubar->addAction(menuFile->menuAction());
+        menubar->addAction(menuEdit->menuAction());
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave);
         menuFile->addAction(actionSave_As);
         menuFile->addAction(actionRename);
+        menuEdit->addAction(actionUndo_2);
+        menuEdit->addAction(actionRedo_Last_Action);
 
         retranslateUi(MainWindow);
 
@@ -225,6 +240,9 @@ public:
         actionSave_As->setText(QCoreApplication::translate("MainWindow", "Save As...", nullptr));
         actionTest->setText(QCoreApplication::translate("MainWindow", "Test", nullptr));
         actionRename->setText(QCoreApplication::translate("MainWindow", "Rename", nullptr));
+        actionUndo->setText(QCoreApplication::translate("MainWindow", "Undo", nullptr));
+        actionUndo_2->setText(QCoreApplication::translate("MainWindow", "Undo", nullptr));
+        actionRedo_Last_Action->setText(QCoreApplication::translate("MainWindow", "Redo Last Action", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "Tools", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "Triangle", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Square", nullptr));
@@ -241,6 +259,7 @@ public:
         btn_ModifyClass->setText(QCoreApplication::translate("MainWindow", "Modify", nullptr));
         btn_SearchList->setText(QCoreApplication::translate("MainWindow", "Search", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
+        menuEdit->setTitle(QCoreApplication::translate("MainWindow", "Edit", nullptr));
     } // retranslateUi
 
 };
