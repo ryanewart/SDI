@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.14.1
+** Created by: Qt User Interface Compiler version 5.14.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -37,6 +37,7 @@ public:
     QAction *actionSave;
     QAction *actionSave_As;
     QAction *actionTest;
+    QAction *actionRename;
     QWidget *centralwidget;
     QGroupBox *groupBox;
     QSplitter *splitter;
@@ -50,7 +51,7 @@ public:
     QListWidget *listWidget;
     QLabel *label;
     QLabel *label_2;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout;
     QPushButton *btn_OpenClass;
     QPushButton *btn_AddClass;
@@ -79,6 +80,9 @@ public:
         actionSave_As->setObjectName(QString::fromUtf8("actionSave_As"));
         actionTest = new QAction(MainWindow);
         actionTest->setObjectName(QString::fromUtf8("actionTest"));
+        actionRename = new QAction(MainWindow);
+        actionRename->setObjectName(QString::fromUtf8("actionRename"));
+        actionRename->setVisible(true);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         groupBox = new QGroupBox(centralwidget);
@@ -137,35 +141,35 @@ public:
         label_2->setObjectName(QString::fromUtf8("label_2"));
         label_2->setGeometry(QRect(680, 600, 211, 31));
         label_2->setFont(font2);
-        widget = new QWidget(centralwidget);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(680, 610, 581, 78));
-        horizontalLayout = new QHBoxLayout(widget);
+        layoutWidget = new QWidget(centralwidget);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(680, 610, 581, 78));
+        horizontalLayout = new QHBoxLayout(layoutWidget);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        btn_OpenClass = new QPushButton(widget);
+        btn_OpenClass = new QPushButton(layoutWidget);
         btn_OpenClass->setObjectName(QString::fromUtf8("btn_OpenClass"));
 
         horizontalLayout->addWidget(btn_OpenClass);
 
-        btn_AddClass = new QPushButton(widget);
+        btn_AddClass = new QPushButton(layoutWidget);
         btn_AddClass->setObjectName(QString::fromUtf8("btn_AddClass"));
 
         horizontalLayout->addWidget(btn_AddClass);
 
-        btn_RemoveClass = new QPushButton(widget);
+        btn_RemoveClass = new QPushButton(layoutWidget);
         btn_RemoveClass->setObjectName(QString::fromUtf8("btn_RemoveClass"));
 
         horizontalLayout->addWidget(btn_RemoveClass);
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        btn_SortList_3 = new QPushButton(widget);
+        btn_SortList_3 = new QPushButton(layoutWidget);
         btn_SortList_3->setObjectName(QString::fromUtf8("btn_SortList_3"));
 
         verticalLayout->addWidget(btn_SortList_3);
 
-        btn_SortList = new QPushButton(widget);
+        btn_SortList = new QPushButton(layoutWidget);
         btn_SortList->setObjectName(QString::fromUtf8("btn_SortList"));
 
         verticalLayout->addWidget(btn_SortList);
@@ -173,22 +177,22 @@ public:
 
         horizontalLayout->addLayout(verticalLayout);
 
-        btn_ModifyClass = new QPushButton(widget);
+        btn_ModifyClass = new QPushButton(layoutWidget);
         btn_ModifyClass->setObjectName(QString::fromUtf8("btn_ModifyClass"));
 
         horizontalLayout->addWidget(btn_ModifyClass);
 
-        btn_SearchList = new QPushButton(widget);
+        btn_SearchList = new QPushButton(layoutWidget);
         btn_SearchList->setObjectName(QString::fromUtf8("btn_SearchList"));
 
         horizontalLayout->addWidget(btn_SearchList);
 
         MainWindow->setCentralWidget(centralwidget);
+        layoutWidget->raise();
         labelMainPic->raise();
         groupBox->raise();
         treeView->raise();
         listWidget->raise();
-        btn_SortList_3->raise();
         label->raise();
         label_2->raise();
         menubar = new QMenuBar(MainWindow);
@@ -205,6 +209,7 @@ public:
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave);
         menuFile->addAction(actionSave_As);
+        menuFile->addAction(actionRename);
 
         retranslateUi(MainWindow);
 
@@ -219,6 +224,7 @@ public:
         actionSave->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
         actionSave_As->setText(QCoreApplication::translate("MainWindow", "Save As...", nullptr));
         actionTest->setText(QCoreApplication::translate("MainWindow", "Test", nullptr));
+        actionRename->setText(QCoreApplication::translate("MainWindow", "Rename", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "Tools", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "Triangle", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Square", nullptr));

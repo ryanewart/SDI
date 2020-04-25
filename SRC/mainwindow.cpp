@@ -610,7 +610,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             PolyPoints.push_back({coords.x(),coords.y()});
             clicks = clicks+1;
         }
-        if (clicks > 8 ) {
+        if (clicks > 10 ) {
             PolyBox.setText("This shape can only have a maximum of 8 points");
             PolyBox.exec();
             PolyPoints.clear();
@@ -1127,6 +1127,7 @@ void MainWindow::onSaveCalled(){
 
 void MainWindow::on_btn_SearchList_clicked()
 {
+    QStringList sortedItemList;
     qDebug() << "Reached";
     int itemCount = ui->listWidget->count();
     std::string temp;
@@ -1142,6 +1143,11 @@ void MainWindow::on_btn_SearchList_clicked()
         if (temp != "") {
             int pos = binarySearch(sortedItems,temp);
             std::cout<<pos<<std::endl;
+            for (int i = 0; i< itemCount; i++) {
+             sortedItemList.push_back(QString::fromStdString(sortedItems[i]));
+            }
+            ui->listWidget->clear();
+            ui->listWidget->addItems(sortedItemList);
             if (pos == -1) {
                 std::cout<<"Item Not Found"<<std::endl;
             }
@@ -1166,7 +1172,7 @@ void MainWindow::on_btn_SortList_3_clicked()
         }
        std:: string* sortedItems= quickSort(items,itemCount-1,0);
        for (int i = 0; i < itemCount; i++) {
-        sortedItemList.push_front(QString::fromStdString(sortedItems[i]));
+            sortedItemList.push_front(QString::fromStdString(sortedItems[i]));
        }
        ui->listWidget->clear();
        ui->listWidget->addItems(sortedItemList);
