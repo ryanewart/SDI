@@ -9,7 +9,6 @@ int binarySearch(std::string searchList[],std::string item) {
     std::string searched;
     while ((count<searchList->size()) && item != searched) {
         mid = (high+low) / 2;
-        //std::cout<<mid<<std::endl;
         if (searchList[mid] < item) {
             low = mid;
         }

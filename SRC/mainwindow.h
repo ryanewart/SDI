@@ -15,7 +15,7 @@
 #include<list>
 #include <QDebug>
 #include "LinkedList.h"
-//#include "annotation.h"
+#include <QCloseEvent>
 #include "mythread.h"
 
 
@@ -145,6 +145,8 @@ private slots:
     void on_btn_SearchList_clicked();
 
     void on_btn_SortList_3_clicked();
+
+    void closeEvent (QCloseEvent *event);
 
 private:
 

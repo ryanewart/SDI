@@ -35,7 +35,7 @@ std:: vector<coords> tempShape;
 QString path;
 std:: vector<classData> classDataIndex;
 std:: vector<QPolygon> Polygons;
-coords polygonArray[8];
+coords polygonArray[9];
 List PolyPoints = List({NULL,NULL});
 
 
@@ -612,7 +612,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
             PolyPoints.push_back({coords.x(),coords.y()});
             clicks = clicks+1;
         }
-        if (clicks > 10 ) {
+        if (clicks > 9 ) {
             PolyBox.setText("This shape can only have a maximum of 8 points");
             PolyBox.exec();
             PolyPoints.clear();
@@ -792,18 +792,22 @@ QPolygon MainWindow::loadShapes(QStringList data, int count, int size) {
 }
 
 void MainWindow::on_actionRename_triggered() {
-        QString oldname = annotationFilePath;
-        oldname = oldname.trimmed();
-        QFile file(annotationFilePath);
-        qDebug() <<oldname;
-        QString newname = QDir::homePath() + "/" +QInputDialog::getText(this, tr("Rename file"), tr("New file name: "), QLineEdit::Normal)+".annotations";
-        bool renameCheck = file.rename(oldname,newname);
-        if (renameCheck == true){
-            QMessageBox::warning(this,"Error","Saved successfully", QMessageBox::Ok);
-                    file.close();
+        if (annotationFilePath != "") {
+            QString oldname = annotationFilePath;
+            oldname = oldname.trimmed();
+            QFile file(annotationFilePath);
+            QString newname = QDir::homePath() + "/" +QInputDialog::getText(this, tr("Rename file"), tr("New file name: "), QLineEdit::Normal)+".annotations";
+            bool renameCheck = file.rename(oldname,newname);
+            if (renameCheck == true){
+                QMessageBox::warning(this,"Error","Rename successful", QMessageBox::Ok);
+                        file.close();
+            }
+            else {
+                QMessageBox::warning(this,"Error","Rename unsuccessful! Please try again.", QMessageBox::Ok);
+            }
         }
         else {
-            QMessageBox::warning(this,"Error","Rename unsuccessful! Please try again.", QMessageBox::Ok);
+            QMessageBox::warning(this,"Error","No File Open", QMessageBox::Ok);
         }
     }
 
@@ -892,7 +896,8 @@ void MainWindow::on_actionOpen_triggered()
 
     }
     catch(const std::runtime_error& e) {
-
+        qDebug()<<"File Error";
+        QMessageBox::warning(this,"Error","Error Opening File!", QMessageBox::Ok);
     }
 }
 
@@ -1112,6 +1117,19 @@ void MainWindow::on_btn_SortList_3_clicked()
     }
     else {
         QMessageBox::information(this, "error", tr("No classes to sort"));
+    }
+}
+
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+    if (annotationFilePath != "") {
+        QMessageBox::StandardButton saveBtn = QMessageBox::question( this, "error",
+                                                                    tr("Would you like to save before Exit?\n"),
+                                                                    QMessageBox::No | QMessageBox::Yes,
+                                                                    QMessageBox::Yes);
+        if (saveBtn != QMessageBox::Yes) {
+            saveAnnotations();
+        }
     }
 }
 
