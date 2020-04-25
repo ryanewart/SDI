@@ -800,6 +800,7 @@ void MainWindow::on_actionRename_triggered() {
             bool renameCheck = file.rename(oldname,newname);
             if (renameCheck == true){
                 QMessageBox::warning(this,"Error","Rename successful", QMessageBox::Ok);
+                        annotationFilePath = newname;
                         file.close();
             }
             else {
