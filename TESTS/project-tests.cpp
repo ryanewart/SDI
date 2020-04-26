@@ -90,30 +90,26 @@ BOOST_AUTO_TEST_CASE( Search_Test )
     BOOST_CHECK_EQUAL(testList.searchList({20,20}), 1);
 }
 
-BOOST_AUTO_TEST_CASE( Search_Test_Missing_Item )
-{
-    coords testCoords = {10,40};
-    List testList(testCoords);
-    coords Test2 = {20,20};
-    testList.push_back(Test2);
-    BOOST_CHECK_EQUAL(testList.searchList({12,13}), 0);
-}
+
 
 //QUICK SORT TEST
 
-//BOOST_AUTO_TEST_CASE( Quick_Sort )
-//{
-//    std::string j[6] = { "2","3","8","13","15","48" };
-//    std::string testItems[6] = { "2","3","15","8","48","13" };
-//    int testItemCount = 6;
-//    std::string items[testItemCount];
-//    for (int i = 0; i < testItemCount ; i++) {
-//        std::string temp = testItems[i];
-//        items[i] = temp;
-//    }
-//    std::string * sortedItems = quickSort(items,testItemCount,0);
-//    BOOST_CHECK_EQUAL(sortedItems,j);
-//}
+BOOST_AUTO_TEST_CASE( Quick_Sort )
+{
+    std::string j[6] = { "Apple","Mango","Cranberry","Potato","Banana","Orange" };
+    std::string testItems[6] = { "Apple","Banana","Cranberry","Mango","Orange","Potato" };
+    int testItemCount = 6;
+    std::string items[testItemCount];
+    for (int i = 0; i < testItemCount ; i++) {
+        std::string temp = testItems[i];
+        items[i] = temp;
+    }
+    std::string * sortedItems = quickSort(items,testItemCount,0);
+    for (int i = 0; i< testItemCount;i++) {
+        BOOST_CHECK_EQUAL(sortedItems[i+1],testItems[i]);
+    }
+}
+
 ////SEARCH ALGORITHM TESTS
 BOOST_AUTO_TEST_CASE( Binary_Search_Found )
 {
