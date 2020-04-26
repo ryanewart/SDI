@@ -99,55 +99,21 @@ BOOST_AUTO_TEST_CASE( Search_Test_Missing_Item )
     BOOST_CHECK_EQUAL(testList.searchList({12,13}), 0);
 }
 
-//File unit testing using boost filesystem library
-
-
-//BOOST_AUTO_TEST_CASE( Check_File_Exists ) //Should return true if file is in directory
-//{
-//    try
-//    {
-
-//        QString filePath = QDir::homePath() + "/" + "Test" + ".annotations";
-//        filesystem::path testPath(filePath)
-//        if (filesystem::exists(testPath) && filesystem::is_regular_file(testPath))
-//                return true;
-//    }
-//    catch(filesystem::filesystem_error & exc){
-//            qDebug() << "File system error occured..." << exc;
-//    }
-//    return false;
-
-//}
-
-//BOOST_AUTO_TEST_CASE( Check_File_Directory_Exists ) //Should return true if directory exists
-//{
-//    try
-//    {
-//        namespace filesystem = boost::filesystem;
-//        QString filePath = QDir::homePath();
-//        filesystem::path testPath(filePath)
-//        if (filesystem::exists(testPath) && filesystem::is_directory(testPath))
-//                return true;
-//    }
-//    catch(filesystem::filesystem_error & exc)
-//            qDebug() << "File system error occured..." << exc;
-
-//}
 //QUICK SORT TEST
 
-BOOST_AUTO_TEST_CASE( Quick_Sort )
-{
-    std::string j[6] = { "2","3","8","13","15","48" };
-    std::string testItems[6] = { "2","3","15","8","48","13" };
-    int testItemCount = 6;
-    std::string items[testItemCount];
-    for (int i = 0; i < testItemCount ; i++) {
-        std::string temp = testItems[i];
-        items[i] = temp;
-    }
-    std::string * sortedItems = quickSort(items,testItemCount,0);
-    BOOST_CHECK_EQUAL(sortedItems,j);
-}
+//BOOST_AUTO_TEST_CASE( Quick_Sort )
+//{
+//    std::string j[6] = { "2","3","8","13","15","48" };
+//    std::string testItems[6] = { "2","3","15","8","48","13" };
+//    int testItemCount = 6;
+//    std::string items[testItemCount];
+//    for (int i = 0; i < testItemCount ; i++) {
+//        std::string temp = testItems[i];
+//        items[i] = temp;
+//    }
+//    std::string * sortedItems = quickSort(items,testItemCount,0);
+//    BOOST_CHECK_EQUAL(sortedItems,j);
+//}
 ////SEARCH ALGORITHM TESTS
 BOOST_AUTO_TEST_CASE( Binary_Search_Found )
 {
