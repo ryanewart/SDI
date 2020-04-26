@@ -514,19 +514,21 @@ void MainWindow::ShowContextMenu(const QPoint &pos) // this is a slot
 {
     QMenu myMenu(tr("Edit Menu"), this);
     if (drawing or moving) {
-    myMenu.addAction("Copy",this,SLOT(copyItem()));
-    if (!moving) {
-    myMenu.addAction("Move",this,SLOT(setMoving()));
-    }
+        myMenu.addAction("Copy",this,SLOT(copyItem()));
+        myMenu.addAction("Delete",this,SLOT(deleteItem()));
+        if (!moving) {
+        myMenu.addAction("Move Shape",this,SLOT(setMoving()));
+        myMenu.addAction("Resize",this,SLOT(setResize()));
+        }
 }
     else {
-        myMenu.addAction("Draw",this,SLOT(drawItem()));
+        myMenu.addAction("Move Point",this,SLOT(drawItem()));
     }
-    myMenu.addAction("Resize",this,SLOT(setResize()));
+
     if (tempShape.size() >0) {
         myMenu.addAction("Paste",this,SLOT(pasteItem()));
     }
-    myMenu.addAction("Delete",this,SLOT(deleteItem()));
+
     QAction* selectedItem = myMenu.exec(mapToGlobal(pos));
 
 }
@@ -567,8 +569,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
 
     //square
     if (type == 1) {
-        x1 = coords.x();//-130;
-        y1 = coords.y();//-120;
+        x1 = coords.x();
+        y1 = coords.y();
 
         if(clicks == 4) {
             clicks = 5;
@@ -831,7 +833,6 @@ void MainWindow::on_actionUndo_2_triggered() {
     if (undoList.size() > 1) {
         std::cout<<"Reached"<<std::endl;
         position = undoList.popHead();
-        std::cout<<position.x<<", "<<position.y<<std::endl;
         switch(position.x) {
             case 1 :
                 redoShape =  Squares[position.y];
